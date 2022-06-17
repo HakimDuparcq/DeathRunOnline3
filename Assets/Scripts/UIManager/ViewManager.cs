@@ -23,10 +23,13 @@ public class ViewManager : MonoBehaviour
         {
             _views[i].Initialize();
             _views[i].Hide();
+
+
         }
         if (_startingView != null)
         {
             Show(_startingView, true);
+
         }
     }
 
@@ -48,14 +51,20 @@ public class ViewManager : MonoBehaviour
         {
             if (s_instance._views[i] is T)
             {
-                if (remember)
+                if (s_instance._currentView != null)
                 {
-                    s_instance._history.Push(s_instance._currentView);
+                    if (remember)
+                    {
+                        s_instance._history.Push(s_instance._currentView);
+                    }
+                    s_instance._currentView.Hide();
+
                 }
-                s_instance._currentView.Hide();
+                s_instance._views[i].Show();
+                s_instance._currentView = s_instance._views[i];
+
             }
-            s_instance._views[i].Show();
-            s_instance._currentView = s_instance._views[i];
+            
         }
     }
 

@@ -9,5 +9,6 @@ public class CharacterPersonnalisationView : View
     public override void Initialize()
     {
         _backButton.onClick.AddListener(() => ViewManager.ShowLast());
+        _backButton.onClick.AddListener(() =>  PersonaliseCharacter.instance.OnSavePersonnalisation());
     }
 }

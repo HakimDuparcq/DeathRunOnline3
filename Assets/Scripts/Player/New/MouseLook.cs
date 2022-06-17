@@ -16,14 +16,18 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y")* mouseSensitivity * Time.deltaTime;
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        Cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
-        playerBody.Rotate(Vector3.up * mouseX);
+            Cam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
+
 
 
         if (Input.GetKeyDown(KeyCode.Escape))  //Unlock cursor after pressing echap

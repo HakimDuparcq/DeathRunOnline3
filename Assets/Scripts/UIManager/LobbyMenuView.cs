@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class LobbyMenuView : View
 {
-    [SerializeField] private Button _backButton;
+    [SerializeField] private Button _startGame;
     public override void Initialize()
     {
-        _backButton.onClick.AddListener(() => ViewManager.ShowLast());
+        _startGame.onClick.AddListener(() => MainGame.instance.CmdStartGame());
+        _startGame.onClick.AddListener(() => ViewManager.Show<NoUIView>());
     }
 }
