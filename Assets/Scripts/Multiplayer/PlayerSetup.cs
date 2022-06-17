@@ -53,7 +53,10 @@ public class  PlayerSetup : NetworkBehaviour
         SpawnTrapper = GameObject.Find("Spawn Trapper").transform;
         SpawnAttacker = GameObject.Find("Spawn Attacker").transform;
         SpawnLobby = GameObject.Find("Spawn Lobby").transform;
-        isTrapper = GameObject.Find("Role").GetComponent<Toggle>().isOn;
+        if (GameObject.Find("Role")!=null)
+        {
+            isTrapper = GameObject.Find("Role").GetComponent<Toggle>().isOn;
+        }
         CameraScene = GameObject.Find("CameraScene");
         Spectator.instance.Players.Add(gameObject);
         if (CameraScene!=null)

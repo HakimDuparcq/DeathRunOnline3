@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Mirror
 {
@@ -13,8 +14,8 @@ namespace Mirror
 
         [Header("NameMenu")]
         public GameObject NameMenu;
-        public InputField InputFieldName;
-        public Text InputName;
+        public TMP_InputField InputFieldName;
+        public TextMeshProUGUI InputName;
         public GameObject ConfirmNameButton;
 
         [Header("ConnectMenu")]
@@ -53,12 +54,7 @@ namespace Mirror
             PreviousName();
         }
 
-        public void Update()
-        {
-            
 
-            
-        }
 
         public void ActiveButtonMenu()
         {
@@ -113,8 +109,6 @@ namespace Mirror
             LocalServerButton.SetActive(true);
             ClientLocalButton.SetActive(true);
             ClientServerButton.SetActive(true);
-            
-
         }
 
         public void OnClickedLocalHost()

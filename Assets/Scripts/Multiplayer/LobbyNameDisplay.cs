@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using TMPro;
 
 public class LobbyNameDisplay : MonoBehaviour
 {
-    public Text[] DisplayNames = new Text[3];
+    public TextMeshProUGUI[] DisplayNames = new TextMeshProUGUI[3];
     public GameObject Role;
-    public Text InputName;
+    public TextMeshProUGUI InputName;
 
     public GameObject StartButton;
 
