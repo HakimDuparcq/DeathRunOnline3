@@ -141,11 +141,15 @@ public class PersonaliseCharacter : MonoBehaviour
         PlayerPrefs.SetInt("Character", Character.actualProp);
         PlayerPrefs.SetInt("PropLeft", PropsLeft.actualProp);
         PlayerPrefs.SetInt("PropRight", PropsRight.actualProp);
-        List<int> Config = new List<int>();
+        List<int> Config = new List<int>();/*
         Config.Add(Character.actualProp);
         Config.Add(PropsLeft.actualProp);
-        Config.Add(PropsRight.actualProp);
+        Config.Add(PropsRight.actualProp);*/
         CharacterUpdate(Config);
+        Debug.Log("Save");
+
+
+
 
     }
 
@@ -162,7 +166,7 @@ public class PersonaliseCharacter : MonoBehaviour
 
 
     public void CharacterUpdate(List<int> ConfigCharacter)
-    {
+    {/*
         if (ConfigCharacter == null)
         {
             playersCharacter = new List<int>();
@@ -177,8 +181,11 @@ public class PersonaliseCharacter : MonoBehaviour
             playersCharacter.Add(ConfigCharacter[0]);
             playersCharacter.Add(ConfigCharacter[1]);
             playersCharacter.Add(ConfigCharacter[2]);
-        }
-        
+        }*/
+        playersCharacter = new List<int>();
+        playersCharacter.Add(Character.actualProp);
+        playersCharacter.Add(PropsLeft.actualProp);
+        playersCharacter.Add(PropsRight.actualProp);
 
         Character.TextNumber.text = Character.actualProp.ToString() + "/" + Character.Props.Length;
         PropsLeft.TextNumber.text = PropsLeft.actualProp.ToString() + "/" + PropsLeft.Props.Length;
@@ -228,6 +235,23 @@ public class PersonaliseCharacter : MonoBehaviour
             PropsRight.Props[i] = PlayerCharacer.transform.GetChild(12).GetChild(0).GetChild(i+4).gameObject;
         }
     }
+
+    public void PlayerChange()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            Character.Props[i] = PlayerCharacer.transform.GetChild(i).gameObject;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            PropsLeft.Props[i] = PlayerCharacer.transform.GetChild(12).GetChild(0).GetChild(i).gameObject;
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            PropsRight.Props[i] = PlayerCharacer.transform.GetChild(12).GetChild(0).GetChild(i + 4).gameObject;
+        }
+    }
+
 
     public void DisablePersonnalisationScene()
     {

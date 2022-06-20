@@ -16,7 +16,7 @@ public class MainGame : NetworkBehaviour
 
     public string LocalPlayerName;
     public string LocalPlayerId;
-
+    public GameObject LocalPlayer;
 
     [SyncVar]
     public bool GameOnServer = false;
@@ -39,7 +39,14 @@ public class MainGame : NetworkBehaviour
 
     void Update()
     {
-        
+        for (int i = 0; i < playersCharacterServer.Count; i++)
+        {
+            for (int ii = 0; ii < playersCharacterServer[i].Count; ii++)
+            {
+                Debug.Log(playersCharacterServer[i][ii]);
+            }
+            Debug.Log("_________");
+        }
 
         if (GameObject.Find("Role")!=null)
         {

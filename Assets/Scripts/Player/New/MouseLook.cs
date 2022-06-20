@@ -30,14 +30,19 @@ public class MouseLook : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.Escape))  //Unlock cursor after pressing echap
+        if (Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.Locked)  //Unlock cursor after pressing echap
         {
             Cursor.lockState = CursorLockMode.None;
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.None)
+        {
+            StartCoroutine(HideMouseOnClick());
         }
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             StartCoroutine(HideMouseOnClick());
+
         }
     }
 
@@ -45,6 +50,7 @@ public class MouseLook : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         Cursor.lockState = CursorLockMode.Locked;
+
     }
 
 }

@@ -10,10 +10,14 @@ public class EscapeMenuView : View
     public Button PersonnalisationButton;
     public Button Settings;
     public Button Quit;
+    [SerializeField] Camera _sceneCamera;
 
     public override void Initialize()
     {
         PersonnalisationButton.onClick.AddListener(() => ViewManager.Show<CharacterPersonnalisationView>() );
+        PersonnalisationButton.onClick.AddListener(() => _sceneCamera.gameObject.SetActive(true));
+        PersonnalisationButton.onClick.AddListener(() => _sceneCamera.depth = 2 );
+        PersonnalisationButton.onClick.AddListener(() => PersonaliseCharacter.instance.PlayerChange());
 
         Settings.onClick.AddListener(() => ViewManager.Show<SettingsMenuView>() );
 

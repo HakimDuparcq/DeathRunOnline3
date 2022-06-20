@@ -74,6 +74,8 @@ public class  PlayerSetup : NetworkBehaviour
 
             MainGame.instance.LocalPlayerName = Name;
             MainGame.instance.LocalPlayerId = netId;
+            MainGame.instance.LocalPlayer = gameObject;
+
             CameraPlayer.GetComponent<Camera>().depth = 1; //Keep camera player
             transform.position = SpawnLobby.position; // Spawn Position
 
@@ -96,7 +98,7 @@ public class  PlayerSetup : NetworkBehaviour
 
         }
 
-        StartCoroutine(SetGameCharacters());
+        //StartCoroutine(SetGameCharacters());
 
         DesactivateWallRenderer();
 
@@ -170,9 +172,9 @@ public class  PlayerSetup : NetworkBehaviour
     }
 
 
-    IEnumerator SetGameCharacters()
+    public void SetGameCharacters()
     {
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds(1);
         int indice = MainGame.instance.playersIdServeur.IndexOf(GetComponent<NetworkIdentity>().netId.ToString());
         //Debug.Log("NetId "+ GetComponent<NetworkIdentity>().netId.ToString() +"     " + "indice " + indice);
         List<int> ConfigCharacter = MainGame.instance.playersCharacterServer[indice];
