@@ -10,6 +10,8 @@ public class EscapeMenuView : View
     public Button PersonnalisationButton;
     public Button Settings;
     public Button Quit;
+    public Button _startGame;
+    public Toggle Role;
     [SerializeField] Camera _sceneCamera;
 
     public override void Initialize()
@@ -17,12 +19,18 @@ public class EscapeMenuView : View
         PersonnalisationButton.onClick.AddListener(() => ViewManager.Show<CharacterPersonnalisationView>() );
         PersonnalisationButton.onClick.AddListener(() => _sceneCamera.gameObject.SetActive(true));
         PersonnalisationButton.onClick.AddListener(() => _sceneCamera.depth = 2 );
-        PersonnalisationButton.onClick.AddListener(() => PersonaliseCharacter.instance.PlayerChange());
-
+        PersonnalisationButton.onClick.AddListener(() => PersonaliseCharacter.instance.PlayerChange());    
+        
         Settings.onClick.AddListener(() => ViewManager.Show<SettingsMenuView>() );
-
+       
         Quit.onClick.AddListener(() => OnClickQuit());
 
+        _startGame.gameObject.SetActive(true);
+        _startGame.onClick.AddListener(() => MainGame.instance.CmdStartGame());
+        _startGame.onClick.AddListener(() => ViewManager.Show<NoUIView>());
+        _startGame.onClick.AddListener(() => Cursor.lockState = CursorLockMode.Locked);
+        _startGame.onClick.AddListener(() => _startGame.gameObject.SetActive(false));
+        
 
 
     }
@@ -31,7 +39,18 @@ public class EscapeMenuView : View
     {
         if (Cursor.lockState == CursorLockMode.Locked)
         {
-            ViewManager.Show<NoUIView>();
+            
+            if (MainGame.instance.GameOnServer)
+            {
+                ViewManager.Show<NoUIView>();
+                //Debug.Log("escapeToNoUI");
+            }
+            else
+            {
+                ViewManager.Show<LobbyMenuView>();
+                //Debug.Log("escapeToLobby");
+
+            }
         }
     }
 

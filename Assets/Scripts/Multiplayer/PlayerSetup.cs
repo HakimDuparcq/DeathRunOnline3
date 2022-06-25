@@ -32,13 +32,15 @@ public class  PlayerSetup : NetworkBehaviour
     {
         if (MainGame.instance.GameOnServer && spawnOneTime)
         {
-            if (MainGame.instance.isTrapper)
+            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
             {
                 transform.position = SpawnTrapper.position;
+                Debug.Log("TeleportTrapper " + gameObject.name);
             }
             else
             {
                 transform.position = SpawnAttacker.position;
+                Debug.Log("TeleportAttack " + gameObject.name);
             }
             spawnOneTime = false;
         }
@@ -81,7 +83,7 @@ public class  PlayerSetup : NetworkBehaviour
 
             gameObject.GetComponent<CharacterController>().enabled = true;
             SetupSkin(true);
-
+            //StartCoroutine(LobbyNameDisplay.instance.SetupRole());
         }
         else
         {
@@ -102,7 +104,7 @@ public class  PlayerSetup : NetworkBehaviour
 
         DesactivateWallRenderer();
 
-        ActiveStartButtonForHost();
+        
 
 
     }
@@ -126,14 +128,7 @@ public class  PlayerSetup : NetworkBehaviour
         }
     }
 
-    public void ActiveStartButtonForHost()
-    {
-        if (isLocalPlayer && MainGame.instance.playersNameServeur[0]== Name)
-        {
-            Button StartButton = GameObject.Find("StartGame").GetComponent<Button>();
-            StartButton.transform.position = new Vector3(StartButton.transform.position.x - 500, StartButton.transform.position.y, StartButton.transform.position.z);
-        }
-    }
+   
 
 
     public override void OnStopClient()
@@ -171,7 +166,7 @@ public class  PlayerSetup : NetworkBehaviour
         }
     }
 
-
+    /*
     public void SetGameCharacters()
     {
         //yield return new WaitForSeconds(1);
@@ -184,7 +179,7 @@ public class  PlayerSetup : NetworkBehaviour
         }
         PersonaliseCharacter.instance.PlayerChange(gameObject.transform.GetChild(0).gameObject);
         PersonaliseCharacter.instance.CharacterUpdate(ConfigCharacter);
-    }
+    }*/
 
 
     public void SetupSkin(bool islocalPlayerrr)
@@ -196,19 +191,38 @@ public class  PlayerSetup : NetworkBehaviour
 
 
 
+  
 
 
 
-
-    public void OnDisable()
+    [Command(requiresAuthority = false)]
+    public void CmdSetCharacter(List<int> playersCharacter, string IdPlayer)
     {
-        if (!isLocalPlayer)
-        {
-            Debug.Log("Disable" + Name + netId);
-            MainGame.instance.CmdOnLocalPlayerDeconnect(Name, netId, PersonaliseCharacter.instance.playersCharacter);
-            Debug.Log("DisableFinish");
+        MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)] = playersCharacter;
 
+        RpcReceiveSetCharacter(IdPlayer);
+    }
+
+
+
+
+
+
+    [ClientRpc]
+    public void RpcReceiveSetCharacter(string IdPlayer)
+    {
+        if (netId == IdPlayer)
+        {
+            StartCoroutine( PersonaliseCharacter.instance.CharacterUpdate2(IdPlayer));
+            Debug.Log(gameObject);
         }
 
     }
+
+
+
+
+
+
+   
 }

@@ -11,5 +11,24 @@ public class LobbyMenuView : View
     {
         _startGame.onClick.AddListener(() => MainGame.instance.CmdStartGame());
         _startGame.onClick.AddListener(() => ViewManager.Show<NoUIView>());
+        _startGame.onClick.AddListener(() => Cursor.lockState = CursorLockMode.Locked);
+
+
     }
+   
+    public void OnEnable()
+    {
+        //Cursor.lockState = CursorLockMode.Locked;
+    }
+
+
+
+    public void Update()
+    {
+        if (Cursor.lockState == CursorLockMode.None)
+        {
+            ViewManager.Show<EscapeMenuView>();
+        }
+    }
+
 }

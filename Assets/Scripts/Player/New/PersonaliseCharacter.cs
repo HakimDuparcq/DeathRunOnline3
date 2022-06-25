@@ -17,7 +17,7 @@ public class PersonaliseCharacter : MonoBehaviour
     void Start()
     {
         instance = this;
-        PlayerChange(PlayerCharacer);
+        
 
         Character.actualProp = 1;
         Character.TextNumber.text = Character.actualProp.ToString() + "/" + Character.Props.Length;
@@ -145,7 +145,7 @@ public class PersonaliseCharacter : MonoBehaviour
         Config.Add(Character.actualProp);
         Config.Add(PropsLeft.actualProp);
         Config.Add(PropsRight.actualProp);*/
-        CharacterUpdate(Config);
+        CharacterUpdate();
         Debug.Log("Save");
 
 
@@ -160,63 +160,68 @@ public class PersonaliseCharacter : MonoBehaviour
             Character.actualProp = PlayerPrefs.GetInt("Character");
             PropsLeft.actualProp = PlayerPrefs.GetInt("PropLeft");
             PropsRight.actualProp = PlayerPrefs.GetInt("PropRight");
-            CharacterUpdate(null);
+            CharacterUpdate();
         }
     }
 
 
-    public void CharacterUpdate(List<int> ConfigCharacter)
-    {/*
-        if (ConfigCharacter == null)
-        {
-            playersCharacter = new List<int>();
-            playersCharacter.Add(Character.actualProp);
-            playersCharacter.Add(PropsLeft.actualProp);
-            playersCharacter.Add(PropsRight.actualProp);
-            //Debug.Log("ListNull");
-        }
-        else
-        {
-            playersCharacter = new List<int>();
-            playersCharacter.Add(ConfigCharacter[0]);
-            playersCharacter.Add(ConfigCharacter[1]);
-            playersCharacter.Add(ConfigCharacter[2]);
-        }*/
+    public void CharacterUpdate()
+    {
         playersCharacter = new List<int>();
         playersCharacter.Add(Character.actualProp);
         playersCharacter.Add(PropsLeft.actualProp);
         playersCharacter.Add(PropsRight.actualProp);
 
-        Character.TextNumber.text = Character.actualProp.ToString() + "/" + Character.Props.Length;
-        PropsLeft.TextNumber.text = PropsLeft.actualProp.ToString() + "/" + PropsLeft.Props.Length;
-        PropsRight.TextNumber.text = PropsRight.actualProp.ToString() + "/" + PropsRight.Props.Length;
+        MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
+        Debug.Log("Update Perso Number i ");
+        
+    }
 
+    public IEnumerator CharacterUpdate2(string IdPlayer)
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)]);
+        //MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
+        PlayerChange(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)].transform.GetChild(0).gameObject);
+        
         foreach (GameObject prop in Character.Props)
         {
             prop.SetActive(false);
         }
-        if (Character.actualProp - 1 >= 0)
+        if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0]  != 0)
         {
-            Character.Props[playersCharacter[0] - 1].SetActive(true);
+            Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] - 1].SetActive(true);
+        }
+        else
+        {
+            Character.Props[0].SetActive(true);
         }
 
         foreach (GameObject prop in PropsLeft.Props)
         {
             prop.SetActive(false);
         }
+        PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].SetActive(true);
+        /*
         if (PropsLeft.actualProp - 1 >= 0)
         {
-            PropsLeft.Props[playersCharacter[1] - 1].SetActive(true);
-        }
+            PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].SetActive(true);
+        }*/
 
         foreach (GameObject prop in PropsRight.Props)
         {
             prop.SetActive(false);
         }
+        PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] - 1].SetActive(true);
+        /*
         if (PropsRight.actualProp - 1 >= 0)
         {
-            PropsRight.Props[playersCharacter[2] - 1].SetActive(true);
-        }
+            PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] - 1].SetActive(true);
+        }*/
+        Debug.Log("Switch to costume " +MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0]
+                    + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1]
+                    + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2]);
+        PlayerChange(PlayerCharacer);
     }
 
 

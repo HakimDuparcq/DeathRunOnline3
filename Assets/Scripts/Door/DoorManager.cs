@@ -20,8 +20,6 @@ public class DoorManager : NetworkBehaviour
     public void RpcOnOpenDoor()
     {
         OpenDoorNumber(1);
-        
-        
     }
 
     public void OpenDoorNumber(int number)

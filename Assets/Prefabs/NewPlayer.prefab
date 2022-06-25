@@ -4464,6 +4464,7 @@ GameObject:
   - component: {fileID: 1976164825161144913}
   - component: {fileID: 6072455522513814743}
   - component: {fileID: 9018279583749202020}
+  - component: {fileID: -6830989657818867371}
   m_Layer: 7
   m_Name: NewPlayer
   m_TagString: Untagged
@@ -4685,6 +4686,18 @@ MonoBehaviour:
   Cam: {fileID: 7730073752191818818}
   mouseSensitivity: 50
   playerBody: {fileID: 7730073751270945527}
+--- !u!114 &-6830989657818867371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730073751270945521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7730073752191818830
 GameObject:
   m_ObjectHideFlags: 0
@@ -4745,7 +4758,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 91.7
   orthographic: 0
   orthographic size: 5
   m_Depth: 0

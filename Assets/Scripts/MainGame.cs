@@ -13,6 +13,7 @@ public class MainGame : NetworkBehaviour
     public readonly  SyncList<string> playersIdServeur = new SyncList<string>();
     public readonly  SyncList< List<int>>playersCharacterServer = new SyncList<List<int>>();
     public readonly  SyncList<bool> playersIsAliveServer = new SyncList<bool>();
+    public readonly SyncList<bool> playersRole = new SyncList<bool>();
 
     public string LocalPlayerName;
     public string LocalPlayerId;
@@ -43,11 +44,12 @@ public class MainGame : NetworkBehaviour
         {
             for (int ii = 0; ii < playersCharacterServer[i].Count; ii++)
             {
-                Debug.Log(playersCharacterServer[i][ii]);
+                //Debug.Log(playersCharacterServer[i][ii]);
             }
-            Debug.Log("_________");
+            //Debug.Log("_________");
         }
-
+        //Debug.Log("_________");
+        
         if (GameObject.Find("Role")!=null)
         {
             isTrapper = GameObject.Find("Role").GetComponent<Toggle>().isOn;   // SPAWN SELON LE ROLE
@@ -70,6 +72,7 @@ public class MainGame : NetworkBehaviour
         playersIdServeur.Add(Id);
         playersCharacterServer.Add(playersCharacter);
         playersIsAliveServer.Add(true);
+        playersRole.Add(false);
 
     }
     
@@ -84,6 +87,7 @@ public class MainGame : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdOnLocalPlayerDeconnect(string LocalPlayerNamee, string LocalPlayerIdd, List<int> playersCharacter)
     {
+        playersRole.Remove(playersRole[playersIdServeur.IndexOf(LocalPlayerIdd)]);
         playersIsAliveServer.Remove(playersIsAliveServer[playersIdServeur.IndexOf(LocalPlayerIdd)]);
         playersNameServeur.Remove(LocalPlayerNamee);
         playersIdServeur.Remove(LocalPlayerIdd);
@@ -114,7 +118,13 @@ public class MainGame : NetworkBehaviour
         DoorManager.instance.RpcOnOpenDoor();
     }
 
+
+
+
     
+
+
+
 
 
 }

@@ -42,15 +42,20 @@ public class MouseLook : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             StartCoroutine(HideMouseOnClick());
-
+            Debug.Log("hide");
         }
+        
     }
 
     IEnumerator HideMouseOnClick()
     {
         yield return new WaitForSeconds(0.1f);
         Cursor.lockState = CursorLockMode.Locked;
-
+    }
+    IEnumerator ShowMouseOnClick()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Cursor.lockState = CursorLockMode.None;
     }
 
 }

@@ -5,85 +5,107 @@ using Mirror;
 using UnityEngine.UI;
 using TMPro;
 
-public class LobbyNameDisplay : MonoBehaviour
+public class LobbyNameDisplay : NetworkBehaviour
 {
+    public static LobbyNameDisplay instance;
+
     public TextMeshProUGUI[] DisplayNames = new TextMeshProUGUI[3];
-    public GameObject Role;
-    public TextMeshProUGUI InputName;
+    public Toggle[] Roles = new Toggle[3];
 
-    public GameObject StartButton;
+    public Button start;
+    public Button startFake;
 
-
+    public Toggle YourRole;
+    public Toggle YourRoleFake;
 
     public void Start()
-
     {
-        MainGame.instance = GameObject.Find("MainGame").GetComponent<MainGame>();
-        /*
-        for (int i = 0; i < DisplayNames.Length; i++)
-        {
-            DisplayNames[i].gameObject.SetActive(true);
-        }*/
+        instance = this;
+        YourRole.onValueChanged.AddListener(delegate { CmdLobbyRole(MainGame.instance.LocalPlayerId, YourRole.isOn); });
+        YourRole.onValueChanged.AddListener(delegate { UpdateFakeToggle(); });
+        StartCoroutine(SetupRole());
     }
+    /*
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        if (isLocalPlayer)
+        {
+            StartCoroutine(SetupRole());
+            Debug.Log("initRole");
+        }
+    }*/
 
     void Update()
     {
-        if (MainGame.instance!=null)
+        for (int i = 0; i < MainGame.instance.playersNameServeur.Count; i++)
         {
-            for (int i = 0; i < DisplayNames.Length; i++)
-            {
-                DisplayNames[i].gameObject.SetActive(true);
-            }
-            Role.SetActive(true);
+            DisplayNames[i].text = MainGame.instance.playersNameServeur[i];
+        }
+        for (int i = MainGame.instance.playersNameServeur.Count; i < DisplayNames.Length; i++)
+        {
+            DisplayNames[i].text = "Waiting for players..";
+        }
 
-            if (!MainGame.instance.GameOnServer ) //tant que la game n'a pas commencé   affiche les noms
-            {
-                for (int i = 0; i < MainGame.instance.playersNameServeur.Count; i++)
-                {
-                    DisplayNames[i].text = MainGame.instance.playersNameServeur[i];
-                }
-                for (int i = MainGame.instance.playersNameServeur.Count; i < DisplayNames.Length; i++)
-                {
-                    DisplayNames[i].text = "Waiting for players..";
-                }
-                //Debug.Log("ok");
-            }
+        
+        if (MainGame.instance.playersIdServeur[0] == MainGame.instance.LocalPlayerId && !MainGame.instance.GameOnServer)
+        {
+            start.gameObject.SetActive(true);
+            startFake.gameObject.SetActive(true);
         }
         else
         {
-            for (int i = 0; i < DisplayNames.Length; i++)
-            {
-                DisplayNames[i].gameObject.SetActive(false);
-            }
-            //StartButton.transform.position = new Vector3(StartButton.transform.position.x - 500, StartButton.transform.position.y, StartButton.transform.position.z);
-            //StartButton.SetActive(false);
-
-
+            start.gameObject.SetActive(false);
+            startFake.gameObject.SetActive(false);
         }
 
         if (MainGame.instance.GameOnServer)
         {
-            for (int i = 0; i < DisplayNames.Length; i++)
-            {
-                DisplayNames[i].gameObject.SetActive(false);
-                Role.SetActive(false);
-                StartButton.SetActive(false);
-            }
+            YourRole.gameObject.SetActive(false);
         }
-
-
-
-    }
-
-    private void OnDisable()
-    {
-        for (int i = 0; i < DisplayNames.Length; i++)
+        else
         {
-            DisplayNames[i].gameObject.SetActive(false);
+            YourRole.gameObject.SetActive(true);
         }
-        //StartButton.SetActive(false);
+    }
+
+    
+    public void UpdateFakeToggle()
+    {
+        YourRoleFake.isOn = YourRole.isOn;
+    }
+    
+
+    public IEnumerator SetupRole()
+    {
+        yield return new WaitForSeconds(1);
+        for (int i = 0; i < MainGame.instance.playersRole.Count; i++)
+        {
+            Roles[i].isOn = MainGame.instance.playersRole[i];
+        }
+    }
+
+
+
+    [Command(requiresAuthority = false)]
+    public void CmdLobbyRole(string netId, bool role)
+    {
+        MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)] = role;
+        
+        RpcLobbyRole( netId,  role);
+    }
+
+    [ClientRpc]
+    public void RpcLobbyRole(string netId, bool role)
+    {
+        Roles[MainGame.instance.playersIdServeur.IndexOf(netId)].isOn = role;
 
     }
+
+    
+   
+
+
 
 
 }
