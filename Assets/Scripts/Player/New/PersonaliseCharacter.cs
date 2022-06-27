@@ -27,7 +27,7 @@ public class PersonaliseCharacter : MonoBehaviour
 
         PropsRight.actualProp = 1;
         PropsRight.TextNumber.text = PropsRight.actualProp.ToString() + "/" + PropsRight.Props.Length;
-        OnLoadPersonnalisation();
+        
     }
 
     void Update()
@@ -153,7 +153,7 @@ public class PersonaliseCharacter : MonoBehaviour
 
     }
 
-    public void OnLoadPersonnalisation()
+    public void OnLoadSelfPersonnalisation()
     {
         if (PlayerPrefs.HasKey("Character"))  // Si y a deja eu un enregistrement
         {
@@ -164,6 +164,18 @@ public class PersonaliseCharacter : MonoBehaviour
         }
     }
 
+    public void OnLoadAllPersonalisation()
+    {
+        for (int i = 0; i < MainGame.instance.playersIdServeur.Count; i++)
+        {
+            StartCoroutine(CharacterUpdate2(MainGame.instance.playersIdServeur[i]) );
+            //Debug.Log("PersoCharacter " + i);
+        }
+
+    }
+
+
+
 
     public void CharacterUpdate()
     {
@@ -173,14 +185,14 @@ public class PersonaliseCharacter : MonoBehaviour
         playersCharacter.Add(PropsRight.actualProp);
 
         MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
-        Debug.Log("Update Perso Number i ");
+        //Debug.Log("Update Perso Number i ");
         
     }
 
     public IEnumerator CharacterUpdate2(string IdPlayer)
     {
         yield return new WaitForSeconds(2);
-        Debug.Log(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)]);
+        //Debug.LogWarning(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)]);
         //MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
         PlayerChange(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)].transform.GetChild(0).gameObject);
         
@@ -190,7 +202,7 @@ public class PersonaliseCharacter : MonoBehaviour
         }
         if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0]  != 0)
         {
-            Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] - 1].SetActive(true);
+            Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] -1].SetActive(true);
         }
         else
         {
@@ -201,26 +213,23 @@ public class PersonaliseCharacter : MonoBehaviour
         {
             prop.SetActive(false);
         }
-        PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].SetActive(true);
-        /*
-        if (PropsLeft.actualProp - 1 >= 0)
+        if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1 >=0)
         {
             PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].SetActive(true);
-        }*/
+        }
+
 
         foreach (GameObject prop in PropsRight.Props)
         {
             prop.SetActive(false);
         }
-        PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] - 1].SetActive(true);
-        /*
-        if (PropsRight.actualProp - 1 >= 0)
+        if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] >=0)
         {
-            PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] - 1].SetActive(true);
-        }*/
-        Debug.Log("Switch to costume " +MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0]
-                    + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1]
-                    + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2]);
+            PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] -1 ].SetActive(true);
+
+        }
+
+        //Debug.Log("Switch to costume " +MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2]);
         PlayerChange(PlayerCharacer);
     }
 

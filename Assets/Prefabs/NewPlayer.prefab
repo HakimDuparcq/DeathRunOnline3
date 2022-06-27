@@ -4465,6 +4465,7 @@ GameObject:
   - component: {fileID: 6072455522513814743}
   - component: {fileID: 9018279583749202020}
   - component: {fileID: -6830989657818867371}
+  - component: {fileID: -8608596165336474292}
   m_Layer: 7
   m_Name: NewPlayer
   m_TagString: Untagged
@@ -4698,6 +4699,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8608596165336474292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730073751270945521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddbea2d80f5a61644a8d115faa598a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthBar: {fileID: 0}
+  layerBlood:
+    serializedVersion: 2
+    m_Bits: 192
+  blood: {fileID: 8111064544165315518, guid: c59c48d3db2ca3c4fb1e40adeb1b5e53, type: 3}
+  Camera: {fileID: 7730073752191818818}
+  BloodEffectContainer: {fileID: 0}
+  maxDistanceRay: 2
+  TimeBetweenClick: 1
+  Compteur: 0
+  AllowToClick: 1
 --- !u!1 &7730073752191818830
 GameObject:
   m_ObjectHideFlags: 0

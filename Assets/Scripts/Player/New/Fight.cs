@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Fight : MonoBehaviour
 {
-    public GameObject hitZone;
+    public Slider HealthBar;
+    public LayerMask layerBlood;
     public ParticleSystem blood;
     public Camera Camera;
     public Transform BloodEffectContainer;
@@ -17,12 +19,12 @@ public class Fight : MonoBehaviour
 
     void Start()
     {
-
+        BloodEffectContainer = GameObject.Find("BloodEffectContainer").transform;
     }
 
     void Update()
     {
-        if (Compteur>= TimeBetweenClick)
+        if (Compteur>= TimeBetweenClick )
         {
             AllowToClick = true;
             Compteur = 0;
@@ -31,23 +33,25 @@ public class Fight : MonoBehaviour
         {
             Compteur += Time.deltaTime;
         }
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 2, Color.red);
         if (Input.GetMouseButtonDown(0) && AllowToClick)
         {
             AllowToClick = false;
+            
             var ray = Camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, maxDistanceRay, 0))
+            if (Physics.Raycast(ray, out hit, maxDistanceRay, layerBlood))
             {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+                
                 Debug.Log(hit.transform.name);
-                if (hit.transform.gameObject.layer == 6 || hit.transform.gameObject.layer == 7) // 6 Player , 7 Ground
+                if (hit.transform.gameObject.layer == 6 || hit.transform.gameObject.layer == 7) // 6 Ground , 7 player
                 {
                     //Debug.Log("Hit");
                     ParticleSystem _blood = Instantiate(blood, BloodEffectContainer );
                     _blood.transform.position = hit.point;
                     _blood.Play();
                 }
-                if (hit.transform.gameObject.layer == 6)
+                if (hit.transform.gameObject.layer == 7)
                 {
                     Debug.Log("Remove life to " + hit.transform.gameObject.name);
                 }

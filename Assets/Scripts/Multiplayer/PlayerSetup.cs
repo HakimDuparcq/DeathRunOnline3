@@ -84,6 +84,8 @@ public class  PlayerSetup : NetworkBehaviour
             gameObject.GetComponent<CharacterController>().enabled = true;
             SetupSkin(true);
             //StartCoroutine(LobbyNameDisplay.instance.SetupRole());
+            PersonaliseCharacter.instance.OnLoadSelfPersonnalisation();
+            PersonaliseCharacter.instance.OnLoadAllPersonalisation();
         }
         else
         {
@@ -97,7 +99,7 @@ public class  PlayerSetup : NetworkBehaviour
             StartCoroutine(WaitConnexion());
             
             SetupSkin(false);
-
+            
         }
 
         //StartCoroutine(SetGameCharacters());
@@ -213,8 +215,9 @@ public class  PlayerSetup : NetworkBehaviour
     {
         if (netId == IdPlayer)
         {
+            //Debug.Log(gameObject);
             StartCoroutine( PersonaliseCharacter.instance.CharacterUpdate2(IdPlayer));
-            Debug.Log(gameObject);
+            
         }
 
     }

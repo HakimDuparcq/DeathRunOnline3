@@ -91,6 +91,7 @@ public class NewPlayerMovement : MonoBehaviour
     IEnumerator WaitDisableAttackAnim(float sec)
     {
         yield return new WaitForSeconds(sec);
+        animator.SetBool("attack", false);
     }
 
     
