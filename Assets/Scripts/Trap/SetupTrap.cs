@@ -28,7 +28,7 @@ public class SetupTrap : MonoBehaviour
         DisableDeathZone();
         HelpText.gameObject.SetActive(false);
     }
-
+    /*
     public IEnumerator Spawning(TrapClass trap)
     {
         ParticleSystem[] trapParticles = new ParticleSystem[trap.positions.Length];
@@ -66,7 +66,7 @@ public class SetupTrap : MonoBehaviour
             Destroy(particle.gameObject);
         }
 
-    }
+    }*/
 
     public void DisableDeathZone()
     {

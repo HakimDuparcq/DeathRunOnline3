@@ -17,7 +17,7 @@ public class  PlayerSetup : NetworkBehaviour
     public Transform SpawnAttacker;
     public Transform SpawnLobby;
 
-    private bool spawnOneTime = true;
+    private int spawnTenTime = 20;
     public Camera CameraPlayer;
     public GameObject CameraScene;
 
@@ -30,19 +30,19 @@ public class  PlayerSetup : NetworkBehaviour
 
     public void Update()
     {
-        if (MainGame.instance.GameOnServer && spawnOneTime)
+        if (isLocalPlayer &&  MainGame.instance.GameOnServer && spawnTenTime > 0 )
         {
             if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
             {
                 transform.position = SpawnTrapper.position;
-                Debug.Log("TeleportTrapper " + gameObject.name);
+                //Debug.Log("TeleportTrapper " + gameObject.name);
             }
             else
             {
                 transform.position = SpawnAttacker.position;
-                Debug.Log("TeleportAttack " + gameObject.name);
+                //Debug.Log("TeleportAttack " + gameObject.name);
             }
-            spawnOneTime = false;
+            spawnTenTime -= 1;
         }
     }
 
@@ -55,10 +55,7 @@ public class  PlayerSetup : NetworkBehaviour
         SpawnTrapper = GameObject.Find("Spawn Trapper").transform;
         SpawnAttacker = GameObject.Find("Spawn Attacker").transform;
         SpawnLobby = GameObject.Find("Spawn Lobby").transform;
-        if (GameObject.Find("Role")!=null)
-        {
-            isTrapper = GameObject.Find("Role").GetComponent<Toggle>().isOn;
-        }
+        
         CameraScene = GameObject.Find("CameraScene");
         Spectator.instance.Players.Add(gameObject);
         if (CameraScene!=null)
@@ -104,7 +101,7 @@ public class  PlayerSetup : NetworkBehaviour
 
         //StartCoroutine(SetGameCharacters());
 
-        DesactivateWallRenderer();
+        
 
         
 
@@ -151,22 +148,7 @@ public class  PlayerSetup : NetworkBehaviour
         yield return new WaitForSeconds(waitTime);
     }
 
-    public void DesactivateWallRenderer()
-    {
-        if (isTrapper)
-        {
-            //Debug.Log("trapperhaha");
-            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallRendererOffTrapper"))
-            {
-                Wall.GetComponent<MeshRenderer>().enabled = false;
-            }
-            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallColliderOffTrapper"))
-            {
-                Wall.GetComponent<MeshCollider>().enabled = false;
-                Wall.GetComponent<MeshRenderer>().enabled = false;
-            }
-        }
-    }
+    
 
     /*
     public void SetGameCharacters()
@@ -217,12 +199,28 @@ public class  PlayerSetup : NetworkBehaviour
         {
             //Debug.Log(gameObject);
             StartCoroutine( PersonaliseCharacter.instance.CharacterUpdate2(IdPlayer));
-            
         }
-
     }
 
 
+    public void SetupRole(bool isTrapper)
+    {
+        if (isTrapper)  //Desactivate Wall 
+        {
+            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallRendererOffTrapper"))
+            {
+                Wall.GetComponent<MeshRenderer>().enabled = false;
+            }
+            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallColliderOffTrapper"))
+            {
+                Wall.GetComponent<MeshCollider>().enabled = false;
+                Wall.GetComponent<MeshRenderer>().enabled = false;
+            }
+            
+        }
+
+
+    }
 
 
 

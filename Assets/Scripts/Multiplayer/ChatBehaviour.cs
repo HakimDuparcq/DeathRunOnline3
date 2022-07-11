@@ -47,6 +47,7 @@ public class ChatBehaviour : NetworkBehaviour
         }
         
         chatText.text += message;
+        
     }
 
     [Client]

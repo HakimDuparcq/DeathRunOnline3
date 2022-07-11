@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class Fight : MonoBehaviour
+public class Fight : NetworkBehaviour
 {
     public Slider HealthBar;
     public LayerMask layerBlood;
@@ -19,7 +20,7 @@ public class Fight : MonoBehaviour
 
     void Start()
     {
-        BloodEffectContainer = GameObject.Find("BloodEffectContainer").transform;
+        BloodEffectContainer = GameObject.Find("BloodContainer").transform;
     }
 
     void Update()
@@ -47,9 +48,10 @@ public class Fight : MonoBehaviour
                 if (hit.transform.gameObject.layer == 6 || hit.transform.gameObject.layer == 7) // 6 Ground , 7 player
                 {
                     //Debug.Log("Hit");
+                    CmdHit(hit.point);/*
                     ParticleSystem _blood = Instantiate(blood, BloodEffectContainer );
                     _blood.transform.position = hit.point;
-                    _blood.Play();
+                    _blood.Play();*/
                 }
                 if (hit.transform.gameObject.layer == 7)
                 {
@@ -57,10 +59,22 @@ public class Fight : MonoBehaviour
                 }
             }
         }
-
-        
-        
     }
+
+    [Command(requiresAuthority = false)]
+    public void CmdHit(Vector3 point)
+    {
+        RpcHit(point);
+    }
+
+
+    [ClientRpc]
+    public void RpcHit(Vector3 point)
+    {
+        ParticleSystem _blood = Instantiate(blood, BloodEffectContainer);
+        _blood.transform.position = point;
+        _blood.Play();
+    }        
 
 
     public void CleanSceneEffectBlood()

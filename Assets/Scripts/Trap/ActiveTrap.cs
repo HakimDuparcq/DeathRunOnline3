@@ -41,25 +41,13 @@ public class ActiveTrap : NetworkBehaviour
             StartCoroutine(Spawning(SetupTrap.instance.Traps[isInNumber]));
             SetupTrap.instance.Traps[isInNumber].isActivable = false;
             SetupTrap.instance.Traps[isInNumber].Trigger.transform.GetChild(0).gameObject.SetActive(false); // Disable light
+            SetupTrap.instance.HelpText.gameObject.SetActive(false);
 
 
-            if (SetupTrap.instance.Traps[isInNumber].FallType == FallType.None)
-            {
-                return;
-            }
-            if (SetupTrap.instance.Traps[isInNumber].FallType == FallType.Down )
-            {
-                SetupTrap.instance.Traps[isInNumber].Trap.GetComponent<Rigidbody>().isKinematic = false;
-            }
-            else if (SetupTrap.instance.Traps[isInNumber].FallType == FallType.Up)
-            {
-                //SetupTrap.instance.Traps[isInNumber].Trap.GetComponent<Animation>().Play();
-            }
 
-            foreach (GameObject DeadZone in SetupTrap.instance.Traps[isInNumber].DeathZone)
-            {
-                DeadZone.SetActive(true);
-            }
+
+
+
 
         }
 
@@ -75,54 +63,68 @@ public class ActiveTrap : NetworkBehaviour
         ParticleSystem[] trapParticles = new ParticleSystem[trap.positions.Length];
         yield return new WaitForSeconds(trap.TimeBeforeSpawn); //Delay before apararing
 
-        int i = 0;
-        foreach (Transform pos in trap.positions)
+        if (trap.TrapType == TrapType.Particle)
         {
-            trapParticles[i] = Instantiate(trap.particles, pos);
-            i++;
+            int i = 0;
+            foreach (Transform pos in trap.positions)
+            {
+                trapParticles[i] = Instantiate(trap.particles, pos);
+                trapParticles[i].Play();
+                i++;
+            }
         }
+        else if (trap.TrapType == TrapType.Fall)
+        {
+            trap.Trap.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        else if (trap.TrapType == TrapType.Stand)//trap.Trap.GetComponent<Animator>())
+        {
+            trap.Trap.GetComponent<Animator>()?.SetBool("up", true);
+        }
+
         foreach (GameObject DeadZone in trap.DeathZone)
         {
             DeadZone.SetActive(true);
         }
-        foreach (ParticleSystem particle in trapParticles)
-        {
-            particle.Play();
-        }
-        if (trap.Trap.GetComponent<Animator>())
-        {
-            trap.Trap.GetComponent<Animator>().SetBool("up", true);
-        }
-
-
         yield return new WaitForSeconds(trap.TimeToStopAnimation);
 
-
-        foreach (ParticleSystem particle in trapParticles)
+        if (trap.TrapType == TrapType.Particle)
         {
-            particle.Pause();
+            foreach (ParticleSystem particle in trapParticles)
+            {
+                particle.Pause();
+            }
         }
+        
         yield return new WaitForSeconds(trap.TimeParticleVisible);
 
-        foreach (ParticleSystem particle in trapParticles)
+        if (trap.TrapType == TrapType.Particle)
         {
-            particle.Play();
+            foreach (ParticleSystem particle in trapParticles)
+            {
+                particle.Play();
+            }
         }
-        if (trap.Trap.GetComponent<Animator>())
+        else if (trap.TrapType == TrapType.Stand)//trap.Trap.GetComponent<Animator>())
         {
             trap.Trap.GetComponent<Animator>()?.SetBool("down", true);
         }
 
         yield return new WaitForSeconds(trap.TimeParticleDisappear);
 
-        foreach (ParticleSystem particle in trapParticles)
+        if (trap.TrapType == TrapType.Particle)
         {
-            particle.Pause();
-            Destroy(particle.gameObject);
+            foreach (ParticleSystem particle in trapParticles)
+            {
+                particle.Stop();
+                Destroy(particle);
+            }
         }
+       
         foreach (GameObject DeadZone in trap.DeathZone)
         {
             DeadZone.SetActive(false);
+            Debug.Log("inactive");
         }
 
     }

@@ -9,9 +9,12 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
     float xRotation = 0f;
 
+
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
@@ -33,6 +36,8 @@ public class MouseLook : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.Locked)  //Unlock cursor after pressing echap
         {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && Cursor.lockState == CursorLockMode.None)
         {
@@ -51,11 +56,14 @@ public class MouseLook : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
     IEnumerator ShowMouseOnClick()
     {
         yield return new WaitForSeconds(0.1f);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
     }
 
 }

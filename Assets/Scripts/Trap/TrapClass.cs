@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public enum FallType
+public enum TrapType
 {
-    None,
-    Down,
-    Up
+    Particle,
+    Fall,
+    Stand
 }
 
 [System.Serializable]
@@ -15,7 +15,7 @@ public class TrapClass
 {
     public bool isActivable;
     public GameObject Trigger;
-    public FallType FallType;
+    public TrapType TrapType;
     public GameObject Trap;
     public ParticleSystem particles;
     public Transform[] positions;

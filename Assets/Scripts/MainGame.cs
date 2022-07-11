@@ -4,6 +4,8 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 
+
+
 public class MainGame : NetworkBehaviour
 {
     public static MainGame instance;
@@ -106,22 +108,31 @@ public class MainGame : NetworkBehaviour
             Debug.Log("DeconnectRpc");
             NetworkManagerr.StopClient();
         }
-        
+
     }
 
-  
+
 
     [Command(requiresAuthority = false)]
     public void CmdStartGame()
     {
         GameOnServer = true;
         DoorManager.instance.RpcOnOpenDoor();
+        RpcStartGame();
     }
 
 
 
+    [ClientRpc]
+    public void RpcStartGame()
+    {
+        LocalPlayer.GetComponent<PlayerSetup>().SetupRole(isTrapper);
+        if (isTrapper)
+        {
+            LocalPlayer.GetComponent<NewPlayerMovement>().speed = 10;
+        }
+    }
 
-    
 
 
 
