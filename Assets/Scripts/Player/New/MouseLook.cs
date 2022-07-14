@@ -8,7 +8,7 @@ public class MouseLook : MonoBehaviour
     public float mouseSensitivity = 100f;
     public Transform playerBody;
     float xRotation = 0f;
-
+    public bool canRotate = true;
 
 
     void Start()
@@ -19,7 +19,7 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        if (Cursor.lockState == CursorLockMode.Locked)
+        if (Cursor.lockState == CursorLockMode.Locked && canRotate)
         {
             float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -44,11 +44,13 @@ public class MouseLook : MonoBehaviour
             StartCoroutine(HideMouseOnClick());
         }
 
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) //Lock si click sur autre chose que UI
         {
             StartCoroutine(HideMouseOnClick());
-            Debug.Log("hide");
+            //Debug.Log("hide");
         }
+
+        
         
     }
 

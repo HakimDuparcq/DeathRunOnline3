@@ -16,8 +16,12 @@ public class  PlayerSetup : NetworkBehaviour
     public Transform SpawnTrapper;
     public Transform SpawnAttacker;
     public Transform SpawnLobby;
+    public Transform SpawnEndGameTrapper;
+    public Transform SpawnEndGameAttacker;
 
-    private int spawnTenTime = 20;
+    private int spawnTenTime1 = 20;
+    private int spawnTenTime2 = 60;
+
     public Camera CameraPlayer;
     public GameObject CameraScene;
 
@@ -30,7 +34,7 @@ public class  PlayerSetup : NetworkBehaviour
 
     public void Update()
     {
-        if (isLocalPlayer &&  MainGame.instance.GameOnServer && spawnTenTime > 0 )
+        if (isLocalPlayer &&  MainGame.instance.GameState == 1 && spawnTenTime1 > 0 )
         {
             if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
             {
@@ -42,8 +46,25 @@ public class  PlayerSetup : NetworkBehaviour
                 transform.position = SpawnAttacker.position;
                 //Debug.Log("TeleportAttack " + gameObject.name);
             }
-            spawnTenTime -= 1;
+            spawnTenTime1 -= 1;
         }
+       
+
+
+        if (isLocalPlayer && MainGame.instance.GameState == 2 && spawnTenTime2 > 0)
+        {
+            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
+            {
+                transform.position = SpawnEndGameTrapper.position;
+            }
+            else
+            {
+                transform.position = SpawnEndGameAttacker.position;
+            }
+            spawnTenTime2 -= 1;
+        }
+
+
     }
 
     public override void OnStartClient()
@@ -55,7 +76,9 @@ public class  PlayerSetup : NetworkBehaviour
         SpawnTrapper = GameObject.Find("Spawn Trapper").transform;
         SpawnAttacker = GameObject.Find("Spawn Attacker").transform;
         SpawnLobby = GameObject.Find("Spawn Lobby").transform;
-        
+        SpawnEndGameTrapper = GameObject.Find("Spawn EndGame Trapper").transform;
+        SpawnEndGameAttacker = GameObject.Find("Spawn EndGame Attacker").transform;
+
         CameraScene = GameObject.Find("CameraScene");
         Spectator.instance.Players.Add(gameObject);
         if (CameraScene!=null)

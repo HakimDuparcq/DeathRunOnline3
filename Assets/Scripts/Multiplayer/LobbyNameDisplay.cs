@@ -48,7 +48,7 @@ public class LobbyNameDisplay : NetworkBehaviour
         }
 
         
-        if (MainGame.instance.playersIdServeur[0] == MainGame.instance.LocalPlayerId && !MainGame.instance.GameOnServer)
+        if (MainGame.instance.playersIdServeur[0] == MainGame.instance.LocalPlayerId && MainGame.instance.GameState ==0)
         {
             start.gameObject.SetActive(true);
             startFake.gameObject.SetActive(true);
@@ -59,7 +59,7 @@ public class LobbyNameDisplay : NetworkBehaviour
             startFake.gameObject.SetActive(false);
         }
 
-        if (MainGame.instance.GameOnServer)
+        if (MainGame.instance.GameState == 1 || MainGame.instance.GameState == 2 )
         {
             YourRole.gameObject.SetActive(false);
         }

@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SoundType
+{
+    Music,
+    FX
+}
+
+
 [System.Serializable]
 public class Sound
 {
-
-
     public string name;
+    public SoundType soundType;
+    
     public AudioClip clip;
 
     [Range(0f, 1f)]

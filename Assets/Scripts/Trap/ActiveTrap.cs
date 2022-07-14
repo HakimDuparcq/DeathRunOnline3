@@ -154,13 +154,17 @@ public class ActiveTrap : NetworkBehaviour
                 ChatBehaviour.instance.CmdSendMessage("Died in the flames", MainGame.instance.LocalPlayerName);
                 gameObject.GetComponent<Animator>().SetBool("death", true);
                 Spectator.instance.ActiveSpectatorMode();
-
+                gameObject.GetComponent<NewPlayerMovement>().canMove = false;
+                gameObject.GetComponent<MouseLook>().canRotate = false;
+                gameObject.transform.GetChild(0).gameObject.SetActive(true);
+                gameObject.transform.GetChild(1).gameObject.SetActive(false);
             }
         }
 
         if (other.tag=="FinishZone")
         {
-
+            Debug.Log("Fight");
+            MainGame.instance.GameState = 2;
         }
 
 

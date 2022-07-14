@@ -16,6 +16,7 @@ public class NewPlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+    public bool canMove = true;
 
     public Animator animator;
     private float x;
@@ -57,7 +58,15 @@ public class NewPlayerMovement : MonoBehaviour
         {
             move = Vector3.Normalize(move);
         }
-        controller.Move(move * speed * Time.deltaTime);
+        if (canMove)
+        {
+            controller.Move(move * speed * Time.deltaTime);
+        }
+
+        if (isGrounded && controller.velocity.magnitude > 0.1f)  //for audio    move != Vector3.zero &&*
+        {
+            AudioManager.instance.Play("Footstep");
+        }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -72,11 +81,7 @@ public class NewPlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-
-        if (move != Vector3.zero && isGrounded)  //for audio
-        {
-            AudioManager.instance.Play("Footstep");
-        }
+        
 
 
         if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.Locked)

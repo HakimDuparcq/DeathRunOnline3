@@ -16,13 +16,16 @@ public class MainGame : NetworkBehaviour
     public readonly  SyncList< List<int>>playersCharacterServer = new SyncList<List<int>>();
     public readonly  SyncList<bool> playersIsAliveServer = new SyncList<bool>();
     public readonly SyncList<bool> playersRole = new SyncList<bool>();
+    public readonly SyncList<int> playersHealth = new SyncList<int>();
+
 
     public string LocalPlayerName;
     public string LocalPlayerId;
     public GameObject LocalPlayer;
+    public int LocalHealth;
 
     [SyncVar]
-    public bool GameOnServer = false;
+    public int GameState = 0;
 
     public NetworkManager NetworkManagerr;
     public bool isTrapper;
@@ -56,6 +59,11 @@ public class MainGame : NetworkBehaviour
         {
             isTrapper = GameObject.Find("Role").GetComponent<Toggle>().isOn;   // SPAWN SELON LE ROLE
         }
+
+
+
+
+
     }
 
     public  void RegisterPlayer(string Name, string Id, List<int> playersCharacter, GameObject Player)
@@ -75,6 +83,7 @@ public class MainGame : NetworkBehaviour
         playersCharacterServer.Add(playersCharacter);
         playersIsAliveServer.Add(true);
         playersRole.Add(false);
+        playersHealth.Add(100);
 
     }
     
@@ -94,7 +103,8 @@ public class MainGame : NetworkBehaviour
         playersNameServeur.Remove(LocalPlayerNamee);
         playersIdServeur.Remove(LocalPlayerIdd);
         playersCharacterServer.Remove(playersCharacter);
-        
+        playersHealth.Remove(playersHealth[playersIdServeur.IndexOf(LocalPlayerIdd)]);
+
         Debug.Log("NameServeur " + LocalPlayerNamee);
         Debug.Log("NameServeur " + LocalPlayerIdd);
         RpcOnLocalPlayerDeconnect(LocalPlayerNamee, LocalPlayerIdd);
@@ -116,9 +126,14 @@ public class MainGame : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdStartGame()
     {
-        GameOnServer = true;
+        GameState = 1;
         DoorManager.instance.RpcOnOpenDoor();
+        for (int i = 0; i < playersHealth.Count; i++)
+        {
+            playersHealth[i] = 100;
+        }
         RpcStartGame();
+        
     }
 
 

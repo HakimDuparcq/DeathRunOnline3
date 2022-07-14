@@ -40,7 +40,7 @@ public class EscapeMenuView : View
         if (Cursor.lockState == CursorLockMode.Locked)
         {
             
-            if (MainGame.instance.GameOnServer)
+            if (MainGame.instance.GameState == 1 || MainGame.instance.GameState == 2)
             {
                 ViewManager.Show<NoUIView>();
                 //Debug.Log("escapeToNoUI");

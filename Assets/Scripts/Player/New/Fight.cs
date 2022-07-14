@@ -9,6 +9,7 @@ public class Fight : NetworkBehaviour
     public Slider HealthBar;
     public LayerMask layerBlood;
     public ParticleSystem blood;
+    public ParticleSystem particleHitGround;
     public Camera Camera;
     public Transform BloodEffectContainer;
 
@@ -25,6 +26,10 @@ public class Fight : NetworkBehaviour
 
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return; 
+        }
         if (Compteur>= TimeBetweenClick )
         {
             AllowToClick = true;
@@ -43,35 +48,53 @@ public class Fight : NetworkBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, maxDistanceRay, layerBlood))
             {
-                
-                Debug.Log(hit.transform.name);
-                if (hit.transform.gameObject.layer == 6 || hit.transform.gameObject.layer == 7) // 6 Ground , 7 player
+                /*if (false)//hit.transform.gameObject == this.gameObject || hit.transform.parent.gameObject == this.gameObject )
                 {
-                    //Debug.Log("Hit");
-                    CmdHit(hit.point);/*
-                    ParticleSystem _blood = Instantiate(blood, BloodEffectContainer );
-                    _blood.transform.position = hit.point;
-                    _blood.Play();*/
+                    //Debug.Log("return");
+                    return;
+                }*/
+                Debug.Log(hit.transform.name);
+                if (hit.transform.gameObject.layer == 6) // 6 Ground , 7 player
+                {
+                    CmdHit(null, hit.point);
                 }
                 if (hit.transform.gameObject.layer == 7)
                 {
-                    Debug.Log("Remove life to " + hit.transform.gameObject.name);
+                    Debug.Log("Remove life to " + hit.transform.parent.name);
+                    CmdHit(hit.transform.parent.GetComponent<PlayerSetup>().netId, hit.point);
+                    
                 }
             }
         }
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdHit(Vector3 point)
+    public void CmdHit(string playerId, Vector3 point)
     {
-        RpcHit(point);
+        if (playerId!=null)
+        {
+            MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)] -= 40;
+            RpcHit(point, false );
+        }
+        else
+        {
+            RpcHit(point, true);
+        }
     }
 
 
     [ClientRpc]
-    public void RpcHit(Vector3 point)
+    public void RpcHit(Vector3 point, bool isGround)
     {
-        ParticleSystem _blood = Instantiate(blood, BloodEffectContainer);
+        ParticleSystem _blood = null;
+        if (isGround)
+        {
+            _blood = Instantiate(particleHitGround, BloodEffectContainer);
+        }
+        else
+        {
+            _blood = Instantiate(blood, BloodEffectContainer);
+        }
         _blood.transform.position = point;
         _blood.Play();
     }        

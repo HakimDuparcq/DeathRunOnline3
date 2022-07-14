@@ -9,20 +9,20 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [Range(0f, 1f)]
-    public float MainVolume =1f;
-    /*
-    [Range(0f, 1f)]
-    public float MusicVolume;
-
+    public float MusicVolume =1f;
+    
     [Range(0f, 1f)]
     public float FXVolume;
-    */
 
     [Space]
-    [Header("Echap")]
-    public Slider volumeSlider;
-    public TextMeshProUGUI volumeValue;
-    public TextMeshProUGUI volumeText;
+    public Slider volumeMusicSlider;
+    public TextMeshProUGUI volumeMusicValue;
+    public TextMeshProUGUI volumeMusicText;
+
+    [Space]
+    public Slider volumeFXSlider;
+    public TextMeshProUGUI volumeFXValue;
+    public TextMeshProUGUI volumeFXText;
 
     [Space]
     public Sound[] sounds;
@@ -31,6 +31,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+
         if (instance == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -40,14 +41,19 @@ public class AudioManager : MonoBehaviour
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
-            s.source.volume = s.volume  * MainVolume;
+            s.source.volume =   s.soundType==SoundType.Music ?    s.volume * MusicVolume   :   s.volume * FXVolume  ;
+            
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
 
         }
-        volumeSlider.value = MainVolume;
-        volumeValue.text = Math.Round(volumeSlider.value ,  1 ).ToString();
-        volumeSlider.onValueChanged.AddListener(delegate { ValueChangeSliderCheck(); });
+        volumeMusicSlider.value = MusicVolume;
+        volumeMusicValue.text = Math.Round(volumeMusicSlider.value ,  1 ).ToString();
+        volumeMusicSlider.onValueChanged.AddListener(delegate { ValueChangeSliderCheck(); });
+
+        volumeFXSlider.value = FXVolume;
+        volumeFXValue.text = Math.Round(volumeFXSlider.value, 1).ToString();
+        volumeFXSlider.onValueChanged.AddListener(delegate { ValueChangeSliderCheck(); });
     }
     public void Start()
     {
@@ -56,14 +62,17 @@ public class AudioManager : MonoBehaviour
 
     public void ValueChangeSliderCheck()
     {
-        MainVolume = volumeSlider.value ;
-        volumeValue.text = Math.Round(volumeSlider.value, 1).ToString();
+        MusicVolume = volumeMusicSlider.value ;
+        volumeMusicValue.text = Math.Round(volumeMusicSlider.value, 1).ToString();
+
+        FXVolume = volumeFXSlider.value;
+        volumeFXValue.text = Math.Round(volumeFXSlider.value, 1).ToString();
 
         foreach (Sound s in sounds)
         {
             if (s.source == null)
                 return;
-            s.source.volume = s.volume * MainVolume;
+            s.source.volume = s.soundType == SoundType.Music ? s.volume * MusicVolume : s.volume * FXVolume;
             s.source.pitch = s.pitch;
         }
     }
@@ -74,7 +83,7 @@ public class AudioManager : MonoBehaviour
         {
             if (s.source ==null)
                 return;
-            s.source.volume = s.volume * MainVolume;
+            s.source.volume = s.soundType == SoundType.Music ? s.volume * MusicVolume : s.volume * FXVolume;
             s.source.pitch = s.pitch;
         }
     }
@@ -93,12 +102,4 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-
-    public void HasHideUI(bool hide)
-    {
-        volumeSlider.gameObject.SetActive(!hide);
-        volumeValue.gameObject.SetActive(!hide);
-        volumeText.gameObject.SetActive(!hide);
-    }
-
 }
