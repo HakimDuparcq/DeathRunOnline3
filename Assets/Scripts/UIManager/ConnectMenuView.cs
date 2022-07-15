@@ -39,7 +39,7 @@ public class ConnectMenuView : View
 
     public void OnClickedLocalHost()
     {
-        NetworkManager.singleton.networkAddress = "localhost";
+        //NetworkManager.singleton.networkAddress = "localhost";
     }
 
     public void OnClickedServerHost()
