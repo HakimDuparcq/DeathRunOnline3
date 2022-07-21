@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ViewManager : MonoBehaviour
 {
-    private static ViewManager s_instance;
+    public static ViewManager s_instance;
 
     [SerializeField] private View _startingView;
 

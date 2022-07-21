@@ -3,16 +3,17 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 public class ChatBehaviour : NetworkBehaviour
 {
     public static ChatBehaviour instance;
 
 
-    [SerializeField] private GameObject chatUI = null;
-    [SerializeField] private TMP_Text chatText = null;
-    [SerializeField] private TMP_InputField inputField = null;
+    public GameObject chatUI = null;
+    public TMP_Text chatText = null;
+    public TMP_Text chatAllText = null;
+    public TMP_InputField inputField = null;
 
     private static event Action<string> OnMessage;
 
@@ -22,6 +23,24 @@ public class ChatBehaviour : NetworkBehaviour
         chatUI.SetActive(true);
 
         OnMessage += HandleNewMessage;
+    }
+
+    public override void OnStartClient()
+    {
+        if (!hasAuthority)
+        {
+
+            chatUI.SetActive(false);
+            this.enabled = false;
+        }
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && !inputField.isFocused)   // !inputField.isFocused  == n'est pas en ecriture inputfield
+        {
+            inputField.Select();
+        }
     }
 
     [ClientCallback]
@@ -47,7 +66,8 @@ public class ChatBehaviour : NetworkBehaviour
         }
         
         chatText.text += message;
-        
+        chatAllText.text += message;
+
     }
 
     [Client]
@@ -60,6 +80,7 @@ public class ChatBehaviour : NetworkBehaviour
         CmdSendMessage(message, MainGame.instance.LocalPlayerName);
 
         inputField.text = string.Empty;
+
     }
 
     [Command]

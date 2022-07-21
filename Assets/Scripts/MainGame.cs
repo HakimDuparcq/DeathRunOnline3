@@ -113,7 +113,7 @@ public class MainGame : NetworkBehaviour
     [ClientRpc]
     public void RpcOnLocalPlayerDeconnect(string LocalPlayerNameInFonction, string LocalPlayerIdInFonction)
     {
-        if (LocalPlayerNameInFonction == LocalPlayerName)
+        if (LocalPlayerIdInFonction == LocalPlayerId)
         {
             Debug.Log("DeconnectRpc");
             NetworkManagerr.StopClient();

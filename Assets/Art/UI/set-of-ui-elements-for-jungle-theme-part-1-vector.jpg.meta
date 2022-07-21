@@ -1,7 +1,13 @@
 fileFormatVersion: 2
 guid: 81334cd613b54094e8a0586393872952
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 1600603918604689570
+    second: set-of-ui-elements-for-jungle-theme-part-1-vector_0
+  - first:
+      213: -3559860455409328192
+    second: set-of-ui-elements-for-jungle-theme-part-1-vector_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -41,7 +47,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -125,7 +131,49 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: set-of-ui-elements-for-jungle-theme-part-1-vector_0
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 61
+        width: 165
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a0e78a98cc763610800000000000000
+      internalID: 1600603918604689570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: set-of-ui-elements-for-jungle-theme-part-1-vector_1
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 58
+        width: 172
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cfdd59d6c5d89ec0800000000000000
+      internalID: -3559860455409328192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

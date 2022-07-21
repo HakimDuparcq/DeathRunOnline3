@@ -10,11 +10,6 @@ public class DoorManager : NetworkBehaviour
     {
         instance = this;
     }
-    private void Update()
-    {
-        
-    }
-
 
     [ClientRpc]
     public void RpcOnOpenDoor()
@@ -25,11 +20,14 @@ public class DoorManager : NetworkBehaviour
     public void OpenDoorNumber(int number)
     {
         for (int i = 0; i < Doors.Length; i++)
-        {
-            if (number==Doors[i].DoorNumber)
-            {
-                Doors[i].lanimator.SetBool("open", true);
-            }
-        }
+         {
+             if (number==Doors[i].DoorNumber)
+             {
+                 Doors[i].lanimator.SetBool("open", true);
+             }
+         }
+
+        AudioManager.instance.Play("DoorOpen");
+
     }
 }

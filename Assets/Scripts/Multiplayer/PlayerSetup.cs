@@ -79,11 +79,15 @@ public class  PlayerSetup : NetworkBehaviour
         SpawnEndGameTrapper = GameObject.Find("Spawn EndGame Trapper").transform;
         SpawnEndGameAttacker = GameObject.Find("Spawn EndGame Attacker").transform;
 
-        CameraScene = GameObject.Find("CameraScene");
+        
         Spectator.instance.Players.Add(gameObject);
+
+        CameraScene = GameObject.Find("CameraScene");
         if (CameraScene!=null)
         {
-            CameraScene.SetActive(false);
+            //CameraScene.SetActive(false);
+            CameraScene.GetComponent<Camera>().enabled = false;
+            CameraScene.GetComponent<AudioListener>().enabled = false;
         }
 
 
@@ -106,6 +110,8 @@ public class  PlayerSetup : NetworkBehaviour
             //StartCoroutine(LobbyNameDisplay.instance.SetupRole());
             PersonaliseCharacter.instance.OnLoadSelfPersonnalisation();
             PersonaliseCharacter.instance.OnLoadAllPersonalisation();
+            gameObject.layer = 7;
+            gameObject.transform.GetChild(1).gameObject.layer = 7;
         }
         else
         {
@@ -119,14 +125,18 @@ public class  PlayerSetup : NetworkBehaviour
             StartCoroutine(WaitConnexion());
             
             SetupSkin(false);
-            
+
+            gameObject.layer = 8;
+            gameObject.transform.GetChild(1).gameObject.layer = 8;
+
+
         }
 
         //StartCoroutine(SetGameCharacters());
 
-        
 
-        
+
+
 
 
     }
@@ -153,16 +163,31 @@ public class  PlayerSetup : NetworkBehaviour
    
 
 
+
     public override void OnStopClient()
     {
         base.OnStopClient();
+
+
+
+
+
         Spectator.instance.Players.Remove(gameObject);
         if (isLocalPlayer)
         {
+            ViewManager.Show<ConnectMenuView>();
+
+            CameraScene = GameObject.Find("CameraScene");
+            Debug.Log(CameraScene);
+            if (CameraScene != null)
+            {
+                CameraScene.GetComponent<Camera>().enabled = true;
+                CameraScene.GetComponent<AudioListener>().enabled = true;
+            }
             StartCoroutine(WaitForSecond(3.0f));
             Debug.Log("STOP");
             MainGame.instance.CmdOnLocalPlayerDeconnect(Name, netId, PersonaliseCharacter.instance.playersCharacter) ;
-            CameraScene.SetActive(true);
+            
         }
     }
 

@@ -53,17 +53,21 @@ public class Fight : NetworkBehaviour
                     //Debug.Log("return");
                     return;
                 }*/
-                Debug.Log(hit.transform.name);
-                if (hit.transform.gameObject.layer == 6) // 6 Ground , 7 player
+                if (MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)])
                 {
-                    CmdHit(null, hit.point);
+                    Debug.Log(hit.transform.name);
+                    if (hit.transform.gameObject.layer == 6) // 6 Ground , 8 OtherPlayer
+                    {
+                        CmdHit(null, hit.point);
+                    }
+                    if (hit.transform.gameObject.layer == 8)
+                    {
+                        Debug.Log("Remove life to " + hit.transform.parent.name);
+                        CmdHit(hit.transform.parent.GetComponent<PlayerSetup>().netId, hit.point);
+
+                    }
                 }
-                if (hit.transform.gameObject.layer == 7)
-                {
-                    Debug.Log("Remove life to " + hit.transform.parent.name);
-                    CmdHit(hit.transform.parent.GetComponent<PlayerSetup>().netId, hit.point);
-                    
-                }
+                
             }
         }
     }
@@ -73,7 +77,14 @@ public class Fight : NetworkBehaviour
     {
         if (playerId!=null)
         {
-            MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)] -= 40;
+            if (true)//MainGame.instance.GameState == 2)
+            {
+                MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)] -= 40;
+            }
+            if (MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)]<=0)
+            {
+                Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(playerId)].GetComponent<ActiveTrap>().RpcOnDied();
+            }
             RpcHit(point, false );
         }
         else

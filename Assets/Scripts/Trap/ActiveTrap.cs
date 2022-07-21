@@ -129,6 +129,22 @@ public class ActiveTrap : NetworkBehaviour
 
     }
 
+    [ClientRpc]
+    public void RpcOnDied()
+    {
+        if (isLocalPlayer)
+        {
+            ChatBehaviour.instance.CmdSendMessage("Died in Combat", MainGame.instance.LocalPlayerName);
+            gameObject.GetComponent<Animator>().SetBool("death", true);
+            Spectator.instance.ActiveSpectatorMode();
+            gameObject.GetComponent<NewPlayerMovement>().canMove = false;
+            gameObject.GetComponent<MouseLook>().canRotate = false;
+            gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            gameObject.transform.GetChild(1).gameObject.SetActive(false);
+        }
+
+    }
+
 
     public void OnTriggerEnter(Collider other)
     {
@@ -151,6 +167,7 @@ public class ActiveTrap : NetworkBehaviour
             Debug.Log("YourAreDead");
             if (isLocalPlayer)
             {
+                MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)] = false;
                 ChatBehaviour.instance.CmdSendMessage("Died in the flames", MainGame.instance.LocalPlayerName);
                 gameObject.GetComponent<Animator>().SetBool("death", true);
                 Spectator.instance.ActiveSpectatorMode();

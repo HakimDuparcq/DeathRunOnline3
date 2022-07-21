@@ -13,9 +13,11 @@ public class NewPlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    public LayerMask playerMask;
 
     Vector3 velocity;
     bool isGrounded;
+    bool isOnPlayer;
     public bool canMove = true;
 
     public Animator animator;
@@ -23,7 +25,7 @@ public class NewPlayerMovement : MonoBehaviour
     private float z;
     void Update()
     {
-        if (Cursor.lockState == CursorLockMode.None)
+        if (Cursor.lockState == CursorLockMode.None  || ChatBehaviour.instance.inputField.isFocused)
         {
             x = 0;
             z = 0;
@@ -35,6 +37,7 @@ public class NewPlayerMovement : MonoBehaviour
         }
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isOnPlayer = Physics.CheckSphere(groundCheck.position, groundDistance, playerMask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -63,7 +66,7 @@ public class NewPlayerMovement : MonoBehaviour
             controller.Move(move * speed * Time.deltaTime);
         }
 
-        if (isGrounded && controller.velocity.magnitude > 0.1f)  //for audio    move != Vector3.zero &&*
+        if (isGrounded && controller.velocity.magnitude > 0.1f)  //for audio   
         {
             AudioManager.instance.Play("Footstep");
         }
@@ -73,21 +76,29 @@ public class NewPlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             animator.SetBool("jump", true);
         }
-        if (!isGrounded)
+        if (!isGrounded  && Cursor.lockState == CursorLockMode.Locked && MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)])
         {
             animator.SetBool("jump", false);
         }
 
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        if (isOnPlayer)
+        {
+            velocity.y = 0;
+        }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
 
-        
 
 
-        if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.Locked)
+
+
+        if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.Locked &&  MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId) ]   )
         {
             animator.SetBool("attack", true);
-            StartCoroutine(WaitDisableAttackAnim(0.9f));
+            StartCoroutine(WaitDisableAttackAnim(0.5f));
         }
 
             

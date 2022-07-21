@@ -1024,6 +1024,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  canMove: 1
   animator: {fileID: 6800089367113812303}
 --- !u!1001 &1820077664
 PrefabInstance:
@@ -1676,6 +1677,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  canMove: 1
   animator: {fileID: 6601410973015831009}
 --- !u!1 &414939254436601986
 GameObject:
@@ -11708,6 +11710,7 @@ GameObject:
   - component: {fileID: 1776098228}
   - component: {fileID: 9018279583474530723}
   - component: {fileID: 7730073752087309112}
+  - component: {fileID: 7730073752087309113}
   m_Layer: 7
   m_Name: NewPlayer
   m_TagString: Untagged
@@ -11745,18 +11748,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbea2d80f5a61644a8d115faa598a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   HealthBar: {fileID: 0}
   layerBlood:
     serializedVersion: 2
     m_Bits: 0
-  hitZone: {fileID: 0}
   blood: {fileID: 0}
+  particleHitGround: {fileID: 0}
   Camera: {fileID: 0}
   BloodEffectContainer: {fileID: 0}
   maxDistanceRay: 2
   TimeBetweenClick: 1
   Compteur: 0
   AllowToClick: 1
+--- !u!114 &7730073752087309113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730073752087309110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 4283397694
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!136 &7730073752509979552
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13813,6 +13835,7 @@ MonoBehaviour:
   Cam: {fileID: 7730073751376201093}
   mouseSensitivity: 50
   playerBody: {fileID: 7730073752087309104}
+  canRotate: 1
 --- !u!4 &9038997568567216020
 Transform:
   m_ObjectHideFlags: 0

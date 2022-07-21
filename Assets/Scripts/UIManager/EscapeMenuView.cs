@@ -11,6 +11,8 @@ public class EscapeMenuView : View
     public Button Settings;
     public Button Quit;
     public Button _startGame;
+    public Button BackButton;
+
     public Toggle Role;
     [SerializeField] Camera _sceneCamera;
 
@@ -30,8 +32,10 @@ public class EscapeMenuView : View
         _startGame.onClick.AddListener(() => ViewManager.Show<NoUIView>());
         _startGame.onClick.AddListener(() => Cursor.lockState = CursorLockMode.Locked);
         _startGame.onClick.AddListener(() => _startGame.gameObject.SetActive(false));
-        
 
+        BackButton.onClick.AddListener(() => Cursor.visible = false);
+        BackButton.onClick.AddListener(() => Cursor.lockState = CursorLockMode.Locked);
+        BackButton.onClick.AddListener(() => ViewManager.ShowLast());
 
     }
 
