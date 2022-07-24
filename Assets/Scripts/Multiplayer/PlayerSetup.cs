@@ -23,7 +23,6 @@ public class  PlayerSetup : NetworkBehaviour
     private int spawnTenTime2 = 60;
 
     public Camera CameraPlayer;
-    public GameObject CameraScene;
 
     
 
@@ -64,6 +63,11 @@ public class  PlayerSetup : NetworkBehaviour
             spawnTenTime2 -= 1;
         }
 
+        if (MainGame.instance.GameState == 0)
+        {
+            spawnTenTime1 = 20;
+            spawnTenTime2 = 60;
+        }
 
     }
 
@@ -82,13 +86,10 @@ public class  PlayerSetup : NetworkBehaviour
         
         Spectator.instance.Players.Add(gameObject);
 
-        CameraScene = GameObject.Find("CameraScene");
-        if (CameraScene!=null)
-        {
-            //CameraScene.SetActive(false);
-            CameraScene.GetComponent<Camera>().enabled = false;
-            CameraScene.GetComponent<AudioListener>().enabled = false;
-        }
+        
+        ViewManager.GetView<EscapeMenuView>()._sceneCamera.gameObject.SetActive(false);
+
+
 
 
 
@@ -177,26 +178,17 @@ public class  PlayerSetup : NetworkBehaviour
         {
             ViewManager.Show<ConnectMenuView>();
 
-            CameraScene = GameObject.Find("CameraScene");
-            Debug.Log(CameraScene);
-            if (CameraScene != null)
-            {
-                CameraScene.GetComponent<Camera>().enabled = true;
-                CameraScene.GetComponent<AudioListener>().enabled = true;
-            }
-            StartCoroutine(WaitForSecond(3.0f));
+
+            ViewManager.GetView<EscapeMenuView>()._sceneCamera.gameObject.SetActive(true);
+
+            
             Debug.Log("STOP");
             MainGame.instance.CmdOnLocalPlayerDeconnect(Name, netId, PersonaliseCharacter.instance.playersCharacter) ;
             
         }
     }
 
-    public IEnumerator WaitForSecond(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-    }
 
-    
 
     /*
     public void SetGameCharacters()
@@ -264,7 +256,18 @@ public class  PlayerSetup : NetworkBehaviour
                 Wall.GetComponent<MeshCollider>().enabled = false;
                 Wall.GetComponent<MeshRenderer>().enabled = false;
             }
-            
+        }
+        else
+        {
+            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallRendererOffTrapper"))
+            {
+                Wall.GetComponent<MeshRenderer>().enabled = true;
+            }
+            foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallColliderOffTrapper"))
+            {
+                Wall.GetComponent<MeshCollider>().enabled = true;
+                Wall.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
 
 

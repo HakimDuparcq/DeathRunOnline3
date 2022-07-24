@@ -14,7 +14,7 @@ public class EscapeMenuView : View
     public Button BackButton;
 
     public Toggle Role;
-    [SerializeField] Camera _sceneCamera;
+    public Camera _sceneCamera;
 
     public override void Initialize()
     {
@@ -60,6 +60,10 @@ public class EscapeMenuView : View
 
     public void OnClickQuit()
     {
+
+
+
+
         Application.Quit();
     }
 

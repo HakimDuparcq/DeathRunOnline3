@@ -9,6 +9,7 @@ public class SetupTrap : MonoBehaviour
 
     [SerializeField]
     public TrapClass[] Traps;
+    public TrapClass[] SauvegardeTrap;
 
     public TextMeshProUGUI HelpText;
 
@@ -26,47 +27,17 @@ public class SetupTrap : MonoBehaviour
     public void Start()
     {
         DisableDeathZone();
+        
         HelpText.gameObject.SetActive(false);
     }
-    /*
-    public IEnumerator Spawning(TrapClass trap)
+    
+    public void ResetTraps()
     {
-        ParticleSystem[] trapParticles = new ParticleSystem[trap.positions.Length];
-        yield return new WaitForSeconds(trap.TimeBeforeSpawn); //Delay before apararing
-
-        int i = 0;
-        foreach (Transform pos in trap.positions)
+        for (int i = 0; i < Traps.Length; i++)
         {
-            trapParticles[i] = Instantiate(trap.particles, pos);
-            i++;
+            Traps[i].isActivable = true;
         }
-
-        foreach (ParticleSystem particle in trapParticles)
-        {
-            particle.Play();
-        }
-        yield return new WaitForSeconds(trap.TimeToStopAnimation);
-
-
-        foreach (ParticleSystem particle in trapParticles)
-        {
-            particle.Pause();
-        }
-        yield return new WaitForSeconds(trap.TimeParticleVisible);
-
-        foreach (ParticleSystem particle in trapParticles)
-        {
-            particle.Play();
-        }
-        yield return new WaitForSeconds(trap.TimeParticleDisappear);
-
-        foreach (ParticleSystem particle in trapParticles)
-        {
-            particle.Pause();
-            Destroy(particle.gameObject);
-        }
-
-    }*/
+    }
 
     public void DisableDeathZone()
     {

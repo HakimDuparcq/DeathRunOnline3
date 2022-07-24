@@ -28,6 +28,22 @@ public class DoorManager : NetworkBehaviour
          }
 
         AudioManager.instance.Play("DoorOpen");
+    }
+
+    public void CloseDoorNumber(int number)
+    {
+        for (int i = 0; i < Doors.Length; i++)
+        {
+            if (number == Doors[i].DoorNumber)
+            {
+                Doors[i].lanimator.SetBool("open", false);
+            }
+        }
+
+        AudioManager.instance.Play("DoorOpen");
 
     }
+
+
+
 }

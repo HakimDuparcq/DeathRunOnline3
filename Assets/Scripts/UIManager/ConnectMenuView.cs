@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using TMPro;
 public class ConnectMenuView : View
 {
     public Button HostClientButton;
@@ -11,6 +12,10 @@ public class ConnectMenuView : View
     public Button StopClientButton;
     public Button StopHostButton;
 
+    [Space(10)]
+    public TMP_InputField IP;
+    public Button IPok;
+
     public override void Initialize()
     {
         HostClientButton.onClick.AddListener(() => NetworkManager.singleton.StartHost());
@@ -18,13 +23,22 @@ public class ConnectMenuView : View
         HostClientButton.onClick.AddListener(() => StopHostButton.gameObject.SetActive(true));
         HostClientButton.onClick.AddListener(() => ViewManager.Show<LobbyMenuView>());
 
-        ClientLocalButton.onClick.AddListener(() => OnClickedLocalHost(isOnServer: false));
+        ClientLocalButton.onClick.AddListener(() => OnClickedClient(IP: "localhost"));
 
-        ClientServerButton.onClick.AddListener(() => OnClickedLocalHost(isOnServer: true));
+        ClientServerButton.onClick.AddListener(() => OnClickedClient(IP: "13.38.74.252"));
+
+        IP.onEndEdit.AddListener(delegate { OnClickedClient(IP: IP.text); });
+
+        IPok.onClick.AddListener(() => OnClickedClient(IP: IP.text));
 
         StopClientButton.onClick.AddListener(() => OnClickedStopClient());
 
         StopHostButton.onClick.AddListener(() => OnClickedStopHost()); 
+
+
+
+
+
     }
 
     public void OnEnable()
@@ -34,12 +48,10 @@ public class ConnectMenuView : View
     }
 
 
-    public void OnClickedLocalHost(bool isOnServer)
+    public void OnClickedClient(string IP)
     {
-        if (isOnServer)
-        {
-            NetworkManager.singleton.networkAddress = "13.38.74.252";
-        }
+        NetworkManager.singleton.networkAddress = IP;
+        
         NetworkManager.singleton.StartClient();
         StopClientButton.gameObject.SetActive(true);
         StopHostButton.gameObject.SetActive(false);

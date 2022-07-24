@@ -57,7 +57,9 @@ public class AudioManager : MonoBehaviour
     }
     public void Start()
     {
-        Play("Theme");
+        #if !UNITY_SERVER
+            Play("Theme");
+        #endif
     }
 
     public void ValueChangeSliderCheck()

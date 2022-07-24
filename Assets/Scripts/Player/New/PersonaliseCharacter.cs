@@ -266,7 +266,7 @@ public class PersonaliseCharacter : MonoBehaviour
         }
     }
 
-
+    /*
     public void DisablePersonnalisationScene()
     {
         Character.TextNumber.gameObject.SetActive(false);
@@ -280,7 +280,7 @@ public class PersonaliseCharacter : MonoBehaviour
         PropsRight.TextNumber.gameObject.SetActive(false);
         PropsRight.DirectionalArrowL.gameObject.SetActive(false);
         PropsRight.DirectionalArrowR.gameObject.SetActive(false);
-    }
+    }*/
 
     public void OnMouseDrag()
     {

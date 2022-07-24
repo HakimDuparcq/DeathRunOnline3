@@ -35,17 +35,7 @@ public class Spectator : NetworkBehaviour
     }
 
 
-    /*public void CameraSpectator()
-    {
-        foreach (GameObject Player in Players)
-        {
-            Player.transform.GetChild(2).gameObject.SetActive(true);// Active Spectator Cam
-            Player.transform.GetChild(2).GetChild(0).gameObject.SetActive(true); 
-
-            Player.transform.GetChild(2).GetChild(0).gameObject.SetActive(false); // Disable Spectator Cam
-            Player.transform.GetChild(2).gameObject.transform.position = new Vector3(0, 0.73f, 0);
-        }
-    }*/
+    
 
     public void OnClickNextSpectator(int addNumber)
     {
@@ -72,16 +62,20 @@ public class Spectator : NetworkBehaviour
 
     }
 
-    public void ActiveSpectatorMode()
+    public IEnumerator ActiveSpectatorMode()
     {
         CmdActiveDisableSpectatorMode(MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId) , false); // Death syncvar 
         //MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)] = false;
 
         ViewManager.Show<SpectatorMenuView>();
 
+       
 
         CmdDisableDeadPlayerCollider(MainGame.instance.LocalPlayerId);
+
+
         Players[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)].transform.GetChild(2).GetChild(0).gameObject.SetActive(true); //Active Cinemachine
+        yield return new WaitForSeconds(2);
 
         bool continu = true;
         for (int i = 0; i < Players.Count && continu; i++)
@@ -106,11 +100,10 @@ public class Spectator : NetworkBehaviour
 
     public void DisableSpectatorMode()
     {
-        ViewManager.Show<NoUIView>();
+        //ViewManager.Show<NoUIView>();
 
-        CmdActiveDeadPlayerCollider(MainGame.instance.LocalPlayerId);
+        //CmdActiveDeadPlayerCollider(MainGame.instance.LocalPlayerId);
 
-        CmdActiveDisableSpectatorMode(MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)  ,  true); // Death syncvar 
         Players[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)].transform.GetChild(2).GetChild(0).gameObject.SetActive(false); //Disable Cinemachine
         Players[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)].transform.GetChild(2).gameObject.transform.localPosition = new Vector3(0, 0.73f, 0);
         Players[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)].transform.GetChild(2).gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
@@ -147,8 +140,9 @@ public class Spectator : NetworkBehaviour
     [ClientRpc]
     public void RpcActiveDeadPlayerCollider(string ID)
     {
-        Players[MainGame.instance.playersIdServeur.IndexOf(ID)].GetComponent<CharacterController>().enabled = true;
-        Players[MainGame.instance.playersIdServeur.IndexOf(ID)].transform.GetChild(1).GetComponent<CapsuleCollider>().enabled = true;
+        //Players[MainGame.instance.playersIdServeur.IndexOf(ID)].GetComponent<CharacterController>().enabled = true;
+        Players[MainGame.instance.playersIdServeur.IndexOf(ID)].transform.GetChild(1).gameObject.SetActive(true);
+        Players[MainGame.instance.playersIdServeur.IndexOf(ID)].transform.GetChild(0).gameObject.SetActive(false);
     }
 
 }

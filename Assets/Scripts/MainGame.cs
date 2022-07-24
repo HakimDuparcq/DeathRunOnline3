@@ -128,12 +128,8 @@ public class MainGame : NetworkBehaviour
     {
         GameState = 1;
         DoorManager.instance.RpcOnOpenDoor();
-        for (int i = 0; i < playersHealth.Count; i++)
-        {
-            playersHealth[i] = 100;
-        }
         RpcStartGame();
-        
+
     }
 
 

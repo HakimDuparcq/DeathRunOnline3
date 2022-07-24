@@ -42,20 +42,7 @@ public class ActiveTrap : NetworkBehaviour
             SetupTrap.instance.Traps[isInNumber].isActivable = false;
             SetupTrap.instance.Traps[isInNumber].Trigger.transform.GetChild(0).gameObject.SetActive(false); // Disable light
             SetupTrap.instance.HelpText.gameObject.SetActive(false);
-
-
-
-
-
-
-
         }
-
-        
-
-       
-
-
     }
 
     public IEnumerator Spawning(TrapClass trap)
@@ -134,9 +121,9 @@ public class ActiveTrap : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            ChatBehaviour.instance.CmdSendMessage("Died in Combat", MainGame.instance.LocalPlayerName);
+            ChatBehaviour.instance.CmdSendMessage("Died in Combat", MainGame.instance.LocalPlayerName, "");
             gameObject.GetComponent<Animator>().SetBool("death", true);
-            Spectator.instance.ActiveSpectatorMode();
+            StartCoroutine(Spectator.instance.ActiveSpectatorMode());
             gameObject.GetComponent<NewPlayerMovement>().canMove = false;
             gameObject.GetComponent<MouseLook>().canRotate = false;
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
@@ -168,9 +155,9 @@ public class ActiveTrap : NetworkBehaviour
             if (isLocalPlayer)
             {
                 MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)] = false;
-                ChatBehaviour.instance.CmdSendMessage("Died in the flames", MainGame.instance.LocalPlayerName);
+                ChatBehaviour.instance.CmdSendMessage("Died in the flames", MainGame.instance.LocalPlayerName, "");
                 gameObject.GetComponent<Animator>().SetBool("death", true);
-                Spectator.instance.ActiveSpectatorMode();
+                StartCoroutine(Spectator.instance.ActiveSpectatorMode());
                 gameObject.GetComponent<NewPlayerMovement>().canMove = false;
                 gameObject.GetComponent<MouseLook>().canRotate = false;
                 gameObject.transform.GetChild(0).gameObject.SetActive(true);

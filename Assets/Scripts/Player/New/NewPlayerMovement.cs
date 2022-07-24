@@ -23,9 +23,14 @@ public class NewPlayerMovement : MonoBehaviour
     public Animator animator;
     private float x;
     private float z;
+
+
+
+
+
     void Update()
     {
-        if (Cursor.lockState == CursorLockMode.None  || ChatBehaviour.instance.inputField.isFocused)
+        if (Cursor.lockState == CursorLockMode.None || ChatBehaviour.instance.inputField.isFocused)
         {
             x = 0;
             z = 0;
@@ -95,9 +100,10 @@ public class NewPlayerMovement : MonoBehaviour
 
 
 
-        if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.Locked &&  MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId) ]   )
+        if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.Locked &&  MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)] && gameObject.GetComponent<Fight>().AllowToClick)
         {
             animator.SetBool("attack", true);
+            gameObject.GetComponent<CrossHairs>().CrossHairsActivationAnim();
             StartCoroutine(WaitDisableAttackAnim(0.5f));
         }
 

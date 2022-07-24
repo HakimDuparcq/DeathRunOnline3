@@ -8,6 +8,7 @@ public class Fight : NetworkBehaviour
 {
     public Slider HealthBar;
     public LayerMask layerBlood;
+    public LayerMask layerOtherPlayer;
     public ParticleSystem blood;
     public ParticleSystem particleHitGround;
     public Camera Camera;
@@ -18,6 +19,8 @@ public class Fight : NetworkBehaviour
     public float TimeBetweenClick = 1;
     public float Compteur=0;
     public bool AllowToClick = true;
+
+
 
     void Start()
     {
@@ -39,11 +42,28 @@ public class Fight : NetworkBehaviour
         {
             Compteur += Time.deltaTime;
         }
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 2, Color.red);
+
+        var rayy = Camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitt;
+        //gameObject.GetComponent<CrossHairs>().CrossHairsActivationColor(false);
+        if (Physics.Raycast(rayy, out hitt, maxDistanceRay, layerOtherPlayer))
+        {
+            if (hitt.transform.gameObject.layer == 8) // 6 Ground , 8 OtherPlayer
+            {
+                gameObject.GetComponent<CrossHairs>().CrossHairsActivationColor(true);
+            }
+        }
+        else
+        {
+            gameObject.GetComponent<CrossHairs>().CrossHairsActivationColor(false);
+        }
+
+
+        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 2, Color.red);
         if (Input.GetMouseButtonDown(0) && AllowToClick)
         {
             AllowToClick = false;
-            
+            Compteur = 0; 
             var ray = Camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, maxDistanceRay, layerBlood))
@@ -55,14 +75,14 @@ public class Fight : NetworkBehaviour
                 }*/
                 if (MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)])
                 {
-                    Debug.Log(hit.transform.name);
+                    //Debug.Log(hit.transform.name);
                     if (hit.transform.gameObject.layer == 6) // 6 Ground , 8 OtherPlayer
                     {
                         CmdHit(null, hit.point);
                     }
                     if (hit.transform.gameObject.layer == 8)
                     {
-                        Debug.Log("Remove life to " + hit.transform.parent.name);
+                        //Debug.Log("Remove life to " + hit.transform.parent.name);
                         CmdHit(hit.transform.parent.GetComponent<PlayerSetup>().netId, hit.point);
 
                     }
@@ -77,7 +97,7 @@ public class Fight : NetworkBehaviour
     {
         if (playerId!=null)
         {
-            if (true)//MainGame.instance.GameState == 2)
+            if (MainGame.instance.GameState == 2)
             {
                 MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)] -= 40;
             }
