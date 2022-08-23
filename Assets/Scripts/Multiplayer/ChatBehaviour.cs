@@ -48,7 +48,6 @@ public class ChatBehaviour : NetworkBehaviour
     {
         if (inputState == 0)   // !inputField.isFocused  == n'est pas en ecriture inputfield          
         {
-
             inputField.enabled = true;
             inputField.ActivateInputField();
         }

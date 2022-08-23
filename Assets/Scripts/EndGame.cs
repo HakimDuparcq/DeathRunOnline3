@@ -86,7 +86,8 @@ public class EndGame : NetworkBehaviour
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {
             Spectator.instance.Players[i].GetComponent<CharacterController>().enabled = false;
-            Spectator.instance.Players[i].GetComponent<PlayerReferences>().Character.SetActive(true);
+            //Spectator.instance.Players[i].GetComponent<PlayerReferences>().Character.SetActive(true);
+            //Spectator.instance.Players[i].GetComponent<PlayerReferences>().Character.transform.position = new Vector3(0, 0, 0);
 
             Spectator.instance.Players[i].GetComponent<PlayerReferences>().Capsule.SetActive(true);
             Spectator.instance.Players[i].GetComponent<PlayerReferences>().Capsule.GetComponent<CapsuleCollider>().enabled = true;
@@ -94,7 +95,8 @@ public class EndGame : NetworkBehaviour
         }
 
         MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = true;
-        MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().Character.SetActive(false);
+        //MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().Character.SetActive(false);
+        //MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().Character.transform.position = new Vector3(0, -0.65f, -0.5f);
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().Capsule.GetComponent<MeshRenderer>().enabled = true;
 
         MainGame.instance.LocalPlayer.GetComponent<NewPlayerMovement>().speed = 8;
@@ -115,9 +117,12 @@ public class EndGame : NetworkBehaviour
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
-        
-
     }
+
+
+    
+
+
 
 
 }

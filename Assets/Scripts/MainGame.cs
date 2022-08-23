@@ -27,7 +27,6 @@ public class MainGame : NetworkBehaviour
     [SyncVar]
     public int GameState = 0;
 
-    public NetworkManager NetworkManagerr;
     public bool isTrapper;
 
     
@@ -39,7 +38,7 @@ public class MainGame : NetworkBehaviour
         
         instance = this;
         gameObject.SetActive(true);
-        NetworkManagerr = GameObject.Find("NetworkManager").GetComponent<NetworkManager>();
+        
 
     }
 
@@ -90,33 +89,39 @@ public class MainGame : NetworkBehaviour
     public void OnLocalPlayerDeconnected()
     {
         Debug.Log("OnLocalPlayerDeconnected");
-        CmdOnLocalPlayerDeconnect(LocalPlayerName, LocalPlayerId, PersonaliseCharacter.instance.playersCharacter);
+        CmdOnLocalPlayerDeconnect(LocalPlayerId);
         
     }
 
 
     [Command(requiresAuthority = false)]
-    public void CmdOnLocalPlayerDeconnect(string LocalPlayerNamee, string LocalPlayerIdd, List<int> playersCharacter)
+    public void CmdOnLocalPlayerDeconnect(string LocalPlayerIdd)
     {
-        playersRole.Remove(playersRole[playersIdServeur.IndexOf(LocalPlayerIdd)]);
-        playersIsAliveServer.Remove(playersIsAliveServer[playersIdServeur.IndexOf(LocalPlayerIdd)]);
-        playersNameServeur.Remove(LocalPlayerNamee);
-        playersIdServeur.Remove(LocalPlayerIdd);
-        playersCharacterServer.Remove(playersCharacter);
-        playersHealth.Remove(playersHealth[playersIdServeur.IndexOf(LocalPlayerIdd)]);
+        int indexPlayer = playersIdServeur.IndexOf(LocalPlayerIdd);
+        playersRole.RemoveAt(indexPlayer);
+        playersIsAliveServer.RemoveAt(indexPlayer);
+        playersNameServeur.RemoveAt(indexPlayer);
+        playersIdServeur.RemoveAt(indexPlayer);
+        playersCharacterServer.RemoveAt(indexPlayer);
+        playersHealth.RemoveAt(indexPlayer);
 
-        Debug.Log("NameServeur " + LocalPlayerNamee);
-        Debug.Log("NameServeur " + LocalPlayerIdd);
-        RpcOnLocalPlayerDeconnect(LocalPlayerNamee, LocalPlayerIdd);
+        //Debug.Log("NameServeur " + LocalPlayerNamee);
+       // Debug.Log("NameServeur " + LocalPlayerIdd);
+        RpcOnLocalPlayerDeconnect(LocalPlayerIdd);
     }
 
     [ClientRpc]
-    public void RpcOnLocalPlayerDeconnect(string LocalPlayerNameInFonction, string LocalPlayerIdInFonction)
+    public void RpcOnLocalPlayerDeconnect(string LocalPlayerIdInFonction)
     {
+        Debug.Log("Deco");
         if (LocalPlayerIdInFonction == LocalPlayerId)
         {
             Debug.Log("DeconnectRpc");
-            NetworkManagerr.StopClient();
+            NetworkManager.singleton.StopClient();
+            if (ViewManager.GetView<EscapeMenuView>().isQuitting)
+            {
+                Application.Quit();
+            }
         }
 
     }

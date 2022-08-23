@@ -20,7 +20,7 @@ public class  PlayerSetup : NetworkBehaviour
     public Transform SpawnEndGameAttacker;
 
     private int spawnTenTime1 = 20;
-    private int spawnTenTime2 = 60;
+    private int spawnTenTime2 = 20;
 
     public Camera CameraPlayer;
 
@@ -46,6 +46,7 @@ public class  PlayerSetup : NetworkBehaviour
                 //Debug.Log("TeleportAttack " + gameObject.name);
             }
             spawnTenTime1 -= 1;
+            Debug.Log("TP Local Player GameState 1");
         }
        
 
@@ -61,6 +62,8 @@ public class  PlayerSetup : NetworkBehaviour
                 transform.position = SpawnEndGameAttacker.position;
             }
             spawnTenTime2 -= 1;
+            Debug.Log("TP Local Player GameState 2");
+
         }
 
         if (MainGame.instance.GameState == 0)
@@ -108,7 +111,7 @@ public class  PlayerSetup : NetworkBehaviour
 
             gameObject.GetComponent<CharacterController>().enabled = true;
             SetupSkin(true);
-            //StartCoroutine(LobbyNameDisplay.instance.SetupRole());
+            
             PersonaliseCharacter.instance.OnLoadSelfPersonnalisation();
             PersonaliseCharacter.instance.OnLoadAllPersonalisation();
             gameObject.layer = 7;
@@ -183,32 +186,27 @@ public class  PlayerSetup : NetworkBehaviour
 
             
             Debug.Log("STOP");
-            MainGame.instance.CmdOnLocalPlayerDeconnect(Name, netId, PersonaliseCharacter.instance.playersCharacter) ;
+            MainGame.instance.CmdOnLocalPlayerDeconnect(netId) ;
             
         }
     }
 
 
 
-    /*
-    public void SetGameCharacters()
-    {
-        //yield return new WaitForSeconds(1);
-        int indice = MainGame.instance.playersIdServeur.IndexOf(GetComponent<NetworkIdentity>().netId.ToString());
-        //Debug.Log("NetId "+ GetComponent<NetworkIdentity>().netId.ToString() +"     " + "indice " + indice);
-        List<int> ConfigCharacter = MainGame.instance.playersCharacterServer[indice];
-        for (int i = 0; i < ConfigCharacter.Count; i++)
-        {
-            //Debug.Log(ConfigCharacter[i]);
-        }
-        PersonaliseCharacter.instance.PlayerChange(gameObject.transform.GetChild(0).gameObject);
-        PersonaliseCharacter.instance.CharacterUpdate(ConfigCharacter);
-    }*/
-
+    
 
     public void SetupSkin(bool islocalPlayerrr)
     {
-        gameObject.transform.GetChild(0).gameObject.SetActive(!islocalPlayerrr);
+        //gameObject.transform.GetChild(0).gameObject.SetActive(!islocalPlayerrr);
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        if (islocalPlayerrr)
+        {
+            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0, -0.65f, -0.5f);
+        }
+        else
+        {
+            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0, -0.8168f, 0);
+        }
         gameObject.transform.GetChild(1).gameObject.GetComponent<MeshRenderer>().enabled = islocalPlayerrr;
         //Debug.Log(islocalPlayerrr, gameObject);
     }

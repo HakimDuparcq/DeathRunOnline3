@@ -12,9 +12,15 @@ public class EscapeMenuView : View
     public Button Quit;
     public Button _startGame;
     public Button BackButton;
-
+    
     public Toggle Role;
+
+    public bool startOnDebugMode;
+    public GameObject DebugModeUI;
+    public Toggle DebugMode;
     public Camera _sceneCamera;
+
+    public bool isQuitting=false;
 
     public override void Initialize()
     {
@@ -25,7 +31,7 @@ public class EscapeMenuView : View
         
         Settings.onClick.AddListener(() => ViewManager.Show<SettingsMenuView>() );
        
-        Quit.onClick.AddListener(() => OnClickQuit());
+        Quit.onClick.AddListener( () => OnClickQuit() );
 
         _startGame.gameObject.SetActive(true);
         _startGame.onClick.AddListener(() => MainGame.instance.CmdStartGame());
@@ -37,6 +43,10 @@ public class EscapeMenuView : View
         BackButton.onClick.AddListener(() => Cursor.lockState = CursorLockMode.Locked);
         BackButton.onClick.AddListener(() => ViewManager.ShowLast());
 
+        
+        DebugMode.onValueChanged.AddListener( delegate { OnValueDebugModeChange(); });
+        DebugModeUI.gameObject.SetActive(startOnDebugMode);
+        DebugMode.isOn = startOnDebugMode;
     }
 
     public void Update()
@@ -58,13 +68,27 @@ public class EscapeMenuView : View
         }
     }
 
+
+    public void OnValueDebugModeChange()
+    {
+        if (DebugMode.isOn)
+        {
+            DebugModeUI.SetActive(true);
+        }
+        else
+        {
+            DebugModeUI.SetActive(false);
+        }
+    }
+
+
+
     public void OnClickQuit()
     {
-
-
-
-
-        Application.Quit();
+        isQuitting = true;
+        MainGame.instance.OnLocalPlayerDeconnected();
     }
+
+    
 
 }

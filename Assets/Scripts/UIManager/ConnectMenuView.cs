@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 using TMPro;
+using System;
+
 public class ConnectMenuView : View
 {
     public Button HostClientButton;
@@ -15,6 +17,11 @@ public class ConnectMenuView : View
     [Space(10)]
     public TMP_InputField IP;
     public Button IPok;
+
+    public Button helpButton;
+    public GameObject helpWindow;
+    public Button helpBack;
+
 
     public override void Initialize()
     {
@@ -33,12 +40,23 @@ public class ConnectMenuView : View
 
         StopClientButton.onClick.AddListener(() => OnClickedStopClient());
 
-        StopHostButton.onClick.AddListener(() => OnClickedStopHost()); 
+        StopHostButton.onClick.AddListener(() => OnClickedStopHost());
 
+        helpWindow.SetActive(false);
+        helpButton.onClick.AddListener(() => OnClickedHelp(true));
+        helpBack.onClick.AddListener(() => OnClickedHelp(false));
+    }
 
-
-
-
+    public void OnClickedHelp(bool show)
+    {
+        if (show)
+        {
+            helpWindow.SetActive(true);
+        }
+        else
+        {
+            helpWindow.SetActive(false);
+        }
     }
 
     public void OnEnable()

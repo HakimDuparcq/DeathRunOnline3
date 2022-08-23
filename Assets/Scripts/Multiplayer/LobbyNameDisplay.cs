@@ -9,8 +9,8 @@ public class LobbyNameDisplay : NetworkBehaviour
 {
     public static LobbyNameDisplay instance;
 
-    public TextMeshProUGUI[] DisplayNames = new TextMeshProUGUI[3];
-    public Toggle[] Roles = new Toggle[3];
+    public TextMeshProUGUI[] DisplayNames;
+    public Toggle[] Roles ;
 
     public Button start;
     public Button startFake;
@@ -25,19 +25,12 @@ public class LobbyNameDisplay : NetworkBehaviour
         YourRole.onValueChanged.AddListener(delegate { UpdateFakeToggle(); });
         StartCoroutine(SetupRole());
     }
-    /*
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        if (isLocalPlayer)
-        {
-            StartCoroutine(SetupRole());
-            Debug.Log("initRole");
-        }
-    }*/
 
+#if !UNITY_SERVER
     void Update()
     {
+
+
         for (int i = 0; i < MainGame.instance.playersNameServeur.Count; i++)
         {
             DisplayNames[i].text = MainGame.instance.playersNameServeur[i];
@@ -48,7 +41,7 @@ public class LobbyNameDisplay : NetworkBehaviour
         }
 
         
-        if (MainGame.instance.playersIdServeur[0] == MainGame.instance.LocalPlayerId && MainGame.instance.GameState ==0)
+        if (MainGame.instance.playersIdServeur.Count>0 &&  MainGame.instance.playersIdServeur[0] == MainGame.instance.LocalPlayerId && MainGame.instance.GameState ==0)
         {
             start.gameObject.SetActive(true);
             startFake.gameObject.SetActive(true);
@@ -68,8 +61,8 @@ public class LobbyNameDisplay : NetworkBehaviour
             YourRole.gameObject.SetActive(true);
         }
     }
+#endif
 
-    
     public void UpdateFakeToggle()
     {
         YourRoleFake.isOn = YourRole.isOn;
