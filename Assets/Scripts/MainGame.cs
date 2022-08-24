@@ -38,8 +38,7 @@ public class MainGame : NetworkBehaviour
         
         instance = this;
         gameObject.SetActive(true);
-        
-
+        Deconnexion.OnExit += OnLocalPlayerDeconnected;
     }
 
     void Update()
@@ -113,17 +112,11 @@ public class MainGame : NetworkBehaviour
     [ClientRpc]
     public void RpcOnLocalPlayerDeconnect(string LocalPlayerIdInFonction)
     {
-        Debug.Log("Deco");
-        if (LocalPlayerIdInFonction == LocalPlayerId)
+        if (LocalPlayerId ==LocalPlayerIdInFonction)
         {
-            Debug.Log("DeconnectRpc");
             NetworkManager.singleton.StopClient();
-            if (ViewManager.GetView<EscapeMenuView>().isQuitting)
-            {
-                Application.Quit();
-            }
-        }
 
+        }
     }
 
 

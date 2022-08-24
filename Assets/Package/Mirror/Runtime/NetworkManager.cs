@@ -621,7 +621,7 @@ namespace Mirror
             //  for a timeout)
             if (NetworkClient.isConnected)
             {
-                StopClient();
+                //StopClient();
                 //Debug.Log("OnApplicationQuit: stopped client");
             }
 
@@ -633,7 +633,7 @@ namespace Mirror
             }
 
             // Call ResetStatics to reset statics and singleton
-            ResetStatics();
+            //ResetStatics();
         }
 
         /// <summary>Set the frame rate for a headless builds. Override to disable or modify.</summary>

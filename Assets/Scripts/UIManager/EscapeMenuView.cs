@@ -20,7 +20,6 @@ public class EscapeMenuView : View
     public Toggle DebugMode;
     public Camera _sceneCamera;
 
-    public bool isQuitting=false;
 
     public override void Initialize()
     {
@@ -85,8 +84,7 @@ public class EscapeMenuView : View
 
     public void OnClickQuit()
     {
-        isQuitting = true;
-        MainGame.instance.OnLocalPlayerDeconnected();
+        Application.Quit();
     }
 
     
