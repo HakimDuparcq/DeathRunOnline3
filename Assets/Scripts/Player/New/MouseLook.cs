@@ -13,6 +13,12 @@ public class MouseLook : MonoBehaviour
 
     void Start()
     {
+        if (PlayerPrefs.HasKey("mouseSensitivity"))
+        {
+            mouseSensitivity = PlayerPrefs.GetFloat("mouseSensitivity");
+            Debug.Log("MouseSensi" + mouseSensitivity);
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -66,6 +72,11 @@ public class MouseLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+    }
+
+    public void OnApplicationQuit()
+    {
+        PlayerPrefs.SetFloat("mouseSensitivity", mouseSensitivity);
     }
 
 }

@@ -13,7 +13,7 @@ public class SliderScripts : MonoBehaviour
     private void Start()
     {
         FillSlider();
-        Debug.Log(gameObject);
+        //Debug.Log(gameObject);
     }
 
     public void FillSlider()

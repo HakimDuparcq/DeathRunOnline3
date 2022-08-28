@@ -31,6 +31,12 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        if (PlayerPrefs.HasKey("MusicVolume") && PlayerPrefs.HasKey("FXVolume"))
+        {
+            MusicVolume = PlayerPrefs.GetFloat("MusicVolume");
+            FXVolume = PlayerPrefs.GetFloat("FXVolume");
+        }
+
 
         if (instance == null)
         {
@@ -103,5 +109,11 @@ public class AudioManager : MonoBehaviour
             s.source.Play();
         }
     }
-    
+
+    public void OnApplicationQuit()
+    {
+        PlayerPrefs.SetFloat("MusicVolume", MusicVolume);
+        PlayerPrefs.SetFloat("FXVolume", FXVolume);
+    }
+
 }

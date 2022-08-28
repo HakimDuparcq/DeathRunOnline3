@@ -114,7 +114,7 @@ public class Spectator : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdActiveDisableSpectatorMode(int numberPlayer, bool boolean)
     {
-        MainGame.instance.playersIsAliveServer[numberPlayer] = boolean;
+        //MainGame.instance.playersIsAliveServer[numberPlayer] = boolean;
     }
 
 

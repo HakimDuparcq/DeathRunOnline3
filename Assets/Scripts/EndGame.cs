@@ -49,22 +49,28 @@ public class EndGame : NetworkBehaviour
         {
             MainGame.instance.playersHealth[i] = 100;
             MainGame.instance.playersIsAliveServer[i] = true;
+            Debug.Log("relive"+i);
         }
 
+        
 
         RpcGameEnd();
+        Debug.Log(MainGame.instance.playersIsAliveServer[0] +" "+ MainGame.instance.playersIsAliveServer[1]);
     }
 
 
     [ClientRpc]
     public void RpcGameEnd()
     {
-        StartCoroutine(NewMethod());
+
+        
+        StartCoroutine(Restart());
     }
 
-    private IEnumerator NewMethod()
+    private IEnumerator Restart()
     {
         yield return new WaitForSeconds(5f);
+        Debug.Log(MainGame.instance.playersIdServeur.Count);
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().PlayerCamera.GetComponent<Camera>().fieldOfView = 91.7f;
 
         StartCoroutine(TpPlayers());

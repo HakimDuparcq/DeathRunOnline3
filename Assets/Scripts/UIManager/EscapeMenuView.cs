@@ -10,6 +10,7 @@ public class EscapeMenuView : View
     public Button PersonnalisationButton;
     public Button Settings;
     public Button Quit;
+    public GameObject Quitting;
     public Button _startGame;
     public Button BackButton;
     
@@ -29,7 +30,8 @@ public class EscapeMenuView : View
         PersonnalisationButton.onClick.AddListener(() => PersonaliseCharacter.instance.PlayerChange());    
         
         Settings.onClick.AddListener(() => ViewManager.Show<SettingsMenuView>() );
-       
+
+        Quitting.SetActive(false);
         Quit.onClick.AddListener( () => OnClickQuit() );
 
         _startGame.gameObject.SetActive(true);
@@ -84,6 +86,7 @@ public class EscapeMenuView : View
 
     public void OnClickQuit()
     {
+        Quitting.SetActive(true);
         Application.Quit();
     }
 

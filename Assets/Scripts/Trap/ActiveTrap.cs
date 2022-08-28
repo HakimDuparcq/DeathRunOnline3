@@ -132,6 +132,14 @@ public class ActiveTrap : NetworkBehaviour
 
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdSendDied(string id)
+    {
+        MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(id)] = false;
+        Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(id)].GetComponent<ActiveTrap>().RpcOnDied();
+    }
+
+
 
     public void OnTriggerEnter(Collider other)
     {
@@ -154,14 +162,7 @@ public class ActiveTrap : NetworkBehaviour
             Debug.Log("YourAreDead");
             if (isLocalPlayer)
             {
-                MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)] = false;
-                ChatBehaviour.instance.CmdSendMessage("Died in the flames", MainGame.instance.LocalPlayerName, "");
-                gameObject.GetComponent<Animator>().SetBool("death", true);
-                StartCoroutine(Spectator.instance.ActiveSpectatorMode());
-                gameObject.GetComponent<NewPlayerMovement>().canMove = false;
-                gameObject.GetComponent<MouseLook>().canRotate = false;
-                gameObject.transform.GetChild(0).gameObject.SetActive(true);
-                gameObject.transform.GetChild(1).gameObject.SetActive(false);
+                CmdSendDied(MainGame.instance.LocalPlayerId);
             }
         }
 
