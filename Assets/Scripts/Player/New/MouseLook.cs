@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class MouseLook : MonoBehaviour
 {
@@ -10,25 +11,26 @@ public class MouseLook : MonoBehaviour
     float xRotation = 0f;
     public bool canRotate = true;
 
-
     void Start()
     {
         if (PlayerPrefs.HasKey("mouseSensitivity"))
         {
             mouseSensitivity = PlayerPrefs.GetFloat("mouseSensitivity");
-            Debug.Log("MouseSensi" + mouseSensitivity);
+            //Debug.Log("MouseSensi" + mouseSensitivity);
         }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+
     }
 
     void Update()
     {
         if (Cursor.lockState == CursorLockMode.Locked && canRotate)
         {
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.fixedDeltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.fixedDeltaTime;
 
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);

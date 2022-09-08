@@ -21,12 +21,31 @@ public class SettingsMenuView : View
         if (PlayerPrefs.HasKey("mouseSensitivity"))
         {
             _mouseSenSensitivity.value = (PlayerPrefs.GetFloat("mouseSensitivity") - 10) /140;
-            Debug.Log("SensSlider" + _mouseSenSensitivity.value);
+            //Debug.Log("SensSlider" + _mouseSenSensitivity.value);
         }
     }
 
     private void ValueChangeCheck()
     {
         _mouseSenSensitivityText.text =( 10 + 140*_mouseSenSensitivity.value).ToString("F0");
+    }
+
+    public void Update()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            MainGame.instance.LocalPlayer.GetComponent<MouseLook>().mouseSensitivity = 10 + 140 * _mouseSenSensitivity.value;
+            if (MainGame.instance.GameState == 1 || MainGame.instance.GameState == 2)
+            {
+                ViewManager.Show<NoUIView>();
+                //Debug.Log("escapeToNoUI");
+            }
+            else
+            {
+                ViewManager.Show<LobbyMenuView>();
+                //Debug.Log("escapeToLobby");
+
+            }
+        }
     }
 }

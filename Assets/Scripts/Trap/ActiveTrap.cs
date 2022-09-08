@@ -11,6 +11,8 @@ public class ActiveTrap : NetworkBehaviour
 
     public int isInNumber =-1; // 0 for nothing
 
+
+
     void Start()
     {
         //Trapss = SetupTrap.instance.Traps;
@@ -18,11 +20,11 @@ public class ActiveTrap : NetworkBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isInNumber!=-1)
+        if (Input.GetButtonDown("ActiveTrap") && isInNumber!=-1)
         {
-            //Debug.Log("trap");
             CmdActiveTrapNumber(isInNumber);
         }
+
     }
 
 
@@ -72,6 +74,7 @@ public class ActiveTrap : NetworkBehaviour
         foreach (GameObject DeadZone in trap.DeathZone)
         {
             DeadZone.SetActive(true);
+            trap.AudioSource.Play();
         }
         yield return new WaitForSeconds(trap.TimeToStopAnimation);
 
@@ -137,11 +140,17 @@ public class ActiveTrap : NetworkBehaviour
     {
         MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(id)] = false;
         Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(id)].GetComponent<ActiveTrap>().RpcOnDied();
+        RpcOnDiedSound();
+    }
+
+    [ClientRpc]
+    public void RpcOnDiedSound()
+    {
+        gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("Death2");
     }
 
 
-
-    public void OnTriggerEnter(Collider other)
+        public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Trigger")
         {

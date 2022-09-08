@@ -51,6 +51,7 @@ public class Fight : NetworkBehaviour
             if (hitt.transform.gameObject.layer == 8) // 6 Ground , 8 OtherPlayer
             {
                 gameObject.GetComponent<CrossHairs>().CrossHairsActivationColor(true);
+
             }
         }
         else
@@ -90,6 +91,12 @@ public class Fight : NetworkBehaviour
                 
             }
         }
+
+
+
+        
+
+
     }
 
     [Command(requiresAuthority = false)]
@@ -120,11 +127,14 @@ public class Fight : NetworkBehaviour
         ParticleSystem _blood = null;
         if (isGround)
         {
-            _blood = Instantiate(particleHitGround, BloodEffectContainer);
+            _blood = Instantiate(particleHitGround, BloodEffectContainer);  // particle
+            Debug.Log("HitGround" + gameObject);
+            gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("HitGround");  //Audio
         }
         else
         {
             _blood = Instantiate(blood, BloodEffectContainer);
+            gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("HitBody");
         }
         _blood.transform.position = point;
         _blood.Play();

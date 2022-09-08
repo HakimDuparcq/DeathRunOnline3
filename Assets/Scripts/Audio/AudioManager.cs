@@ -26,8 +26,8 @@ public class AudioManager : MonoBehaviour
 
     [Space]
     public Sound[] sounds;
-    
 
+    public static Action SliderSoundChanged;
 
     void Awake()
     {
@@ -83,6 +83,7 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.soundType == SoundType.Music ? s.volume * MusicVolume : s.volume * FXVolume;
             s.source.pitch = s.pitch;
         }
+        SliderSoundChanged.Invoke();
     }
 
     private void OnValidate() //lorsque la valleur change

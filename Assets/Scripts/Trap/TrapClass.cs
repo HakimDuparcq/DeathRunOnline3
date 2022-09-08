@@ -21,6 +21,11 @@ public class TrapClass
     public Transform[] positions;
     public GameObject[] DeathZone;
 
+
+    public AudioSource AudioSource;
+    [Space(10)]
+
+
     public float TimeBeforeSpawn = 1;
     public float TimeToStopAnimation = 2;
     public float TimeParticleVisible = 4;

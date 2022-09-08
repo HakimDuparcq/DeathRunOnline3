@@ -9,4 +9,5 @@ public class PlayerReferences : MonoBehaviour
     public GameObject PlayerCamera;
     public GameObject PlayerCinemachineCamera;
     public GameObject Canvas;
+    public GameObject Audio;
 }

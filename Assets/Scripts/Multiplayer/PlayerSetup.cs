@@ -120,7 +120,7 @@ public class  PlayerSetup : NetworkBehaviour
         else
         {
             gameObject.GetComponent<CharacterController>().enabled = false;
-            gameObject.GetComponent<NewPlayerMovement>().enabled = false;
+            //gameObject.GetComponent<NewPlayerMovement>().enabled = false;
             gameObject.GetComponent<MouseLook>().enabled = false;
 
             CameraPlayer.gameObject.SetActive(false);
@@ -247,7 +247,7 @@ public class  PlayerSetup : NetworkBehaviour
         {
             foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallRendererOffTrapper"))
             {
-                Wall.GetComponent<MeshRenderer>().enabled = false;
+                //Wall.GetComponent<MeshRenderer>().enabled = false;
             }
             foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallColliderOffTrapper"))
             {
@@ -259,7 +259,7 @@ public class  PlayerSetup : NetworkBehaviour
         {
             foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallRendererOffTrapper"))
             {
-                Wall.GetComponent<MeshRenderer>().enabled = true;
+                //Wall.GetComponent<MeshRenderer>().enabled = true;
             }
             foreach (GameObject Wall in GameObject.FindGameObjectsWithTag("WallColliderOffTrapper"))
             {

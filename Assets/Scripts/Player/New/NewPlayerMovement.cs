@@ -25,11 +25,32 @@ public class NewPlayerMovement : MonoBehaviour
     private float z;
 
 
-
-
+    private Vector3 lastPos; //for footstep
+    private float _speed;
 
     void Update()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isOnPlayer = Physics.CheckSphere(groundCheck.position, groundDistance, playerMask);
+
+
+        _speed = (transform.position - lastPos).magnitude / Time.deltaTime;
+        lastPos = transform.position;
+        if (isGrounded && _speed > 0.1f)  //for audio   
+        {
+            //AudioManager.instance.Play("Footstep");
+            gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("Footstep");
+        }
+
+        if (!gameObject.GetComponent<PlayerSetup>().isLocalPlayer)
+        {
+            return;
+        }
+
+
+
+
+
         if (Cursor.lockState == CursorLockMode.None || ChatBehaviour.instance.inputField.isFocused)
         {
             x = 0;
@@ -40,16 +61,10 @@ public class NewPlayerMovement : MonoBehaviour
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
         }
-
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        isOnPlayer = Physics.CheckSphere(groundCheck.position, groundDistance, playerMask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-
-            
-
         if (x != 0 || z != 0)
         {
             animator.SetBool("running", true);
@@ -71,10 +86,9 @@ public class NewPlayerMovement : MonoBehaviour
             controller.Move(move * speed * Time.deltaTime);
         }
 
-        if (isGrounded && controller.velocity.magnitude > 0.1f)  //for audio   
-        {
-            AudioManager.instance.Play("Footstep");
-        }
+
+
+
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {

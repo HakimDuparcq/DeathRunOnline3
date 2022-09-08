@@ -13,11 +13,17 @@ public class PersonaliseCharacter : MonoBehaviour
     public Custom Character;
     public Custom PropsLeft;
     public Custom PropsRight;
+
+    public TextMeshProUGUI ColorText;
+    public Button ColorDirectionalArrowL;
+    public Button ColorDirectionalArrowR;
+    public Material[] ColorMaterials;
+    public int actualColor;
+
     public List<int> playersCharacter = new List<int>();
     void Start()
     {
         instance = this;
-        
 
         Character.actualProp = 1;
         Character.TextNumber.text = Character.actualProp.ToString() + "/" + Character.Props.Length;
@@ -27,7 +33,9 @@ public class PersonaliseCharacter : MonoBehaviour
 
         PropsRight.actualProp = 1;
         PropsRight.TextNumber.text = PropsRight.actualProp.ToString() + "/" + PropsRight.Props.Length;
-        
+
+        actualColor = 1;
+        ColorText.text = actualColor.ToString() + "/" + ColorMaterials.Length;
     }
 
     void Update()
@@ -135,6 +143,34 @@ public class PersonaliseCharacter : MonoBehaviour
         }
     }
 
+    public void OnClickArrowColors(int MagnusOneLeftandOneRight)
+    {
+
+        if (actualColor + MagnusOneLeftandOneRight == -1)
+        {
+            actualColor = ColorMaterials.Length;
+        }
+        else
+        {
+            actualColor = (actualColor + MagnusOneLeftandOneRight) % (ColorMaterials.Length + 1);
+        }
+        ColorText.text = actualColor.ToString() + "/" + ColorMaterials.Length;
+
+        if (actualColor - 1 >= 0)
+        {
+            for (int i = 0; i < Character.Props.Length; i++)
+            {
+                Material[] Mats =  new Material[] { ColorMaterials[actualColor] };
+                Character.Props[i].GetComponent<SkinnedMeshRenderer>().materials = Mats;
+                Debug.Log(ColorMaterials[actualColor]);
+            }
+            
+        }
+
+
+
+
+    }
 
     public void OnSavePersonnalisation()
     {

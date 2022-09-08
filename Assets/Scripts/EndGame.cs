@@ -25,7 +25,6 @@ public class EndGame : NetworkBehaviour
                 CmdGameEnd(true);
             }
         }
-        
     }
 
     public bool isTeamDead(bool trapperTeam)
@@ -45,6 +44,7 @@ public class EndGame : NetworkBehaviour
     {
         MainGame.instance.GameState = 0;
 
+       
         for (int i = 0; i < MainGame.instance.playersIdServeur.Count; i++)
         {
             MainGame.instance.playersHealth[i] = 100;
@@ -52,10 +52,10 @@ public class EndGame : NetworkBehaviour
             Debug.Log("relive"+i);
         }
 
-        
+
 
         RpcGameEnd();
-        Debug.Log(MainGame.instance.playersIsAliveServer[0] +" "+ MainGame.instance.playersIsAliveServer[1]);
+        
     }
 
 
@@ -70,7 +70,7 @@ public class EndGame : NetworkBehaviour
     private IEnumerator Restart()
     {
         yield return new WaitForSeconds(5f);
-        Debug.Log(MainGame.instance.playersIdServeur.Count);
+        
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().PlayerCamera.GetComponent<Camera>().fieldOfView = 91.7f;
 
         StartCoroutine(TpPlayers());
@@ -119,8 +119,8 @@ public class EndGame : NetworkBehaviour
             for (int i = 0; i < Spectator.instance.Players.Count; i++)     // TP Lobby
             {
                 Spectator.instance.Players[i].transform.position = Spectator.instance.Players[i].GetComponent<PlayerSetup>().SpawnLobby.position;
-                Debug.Log("TP");
             }
+            Debug.Log("TP");
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }

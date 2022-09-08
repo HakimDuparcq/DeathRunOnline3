@@ -20,12 +20,12 @@ public class DoorManager : NetworkBehaviour
     public void OpenDoorNumber(int number)
     {
         for (int i = 0; i < Doors.Length; i++)
-         {
+        {
              if (number==Doors[i].DoorNumber)
              {
                  Doors[i].lanimator.SetBool("open", true);
              }
-         }
+        }
 
         AudioManager.instance.Play("DoorOpen");
     }

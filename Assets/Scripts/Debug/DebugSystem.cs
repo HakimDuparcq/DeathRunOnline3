@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using Mirror;
 
 public class DebugSystem : MonoBehaviour
 {
-
-
+    public TextMeshProUGUI ping;
+    public TextMeshProUGUI Fps;
 
     public TextMeshProUGUI logMessage;
     public Button Clear;
@@ -19,7 +21,8 @@ public class DebugSystem : MonoBehaviour
 
     void Update()
     {
-        
+        ping.text = "Ping " + Math.Round(NetworkTime.rtt * 1000).ToString();
+        Fps.text = "Fps " + (1/ Time.smoothDeltaTime).ToString();
     }
 
 

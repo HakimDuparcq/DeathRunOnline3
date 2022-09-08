@@ -9,7 +9,6 @@ public class SetupTrap : MonoBehaviour
 
     [SerializeField]
     public TrapClass[] Traps;
-    public TrapClass[] SauvegardeTrap;
 
     public TextMeshProUGUI HelpText;
 
@@ -35,7 +34,12 @@ public class SetupTrap : MonoBehaviour
     {
         for (int i = 0; i < Traps.Length; i++)
         {
-            Traps[i].isActivable = true;
+            if (Traps[i].TrapType == TrapType.Fall)
+            {
+                Traps[i].Trap.GetComponent<Rigidbody>().isKinematic = true;   // reset chandelier 
+                Traps[i].Trap.transform.localPosition = new Vector3(5.9f, 7.2613f, -46.7287f);
+            }
+                Traps[i].isActivable = true;
         }
     }
 

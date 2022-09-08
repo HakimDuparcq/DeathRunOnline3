@@ -15,4 +15,25 @@ public class CharacterPersonnalisationView : View
 
 
     }
+
+    public void Update()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+
+            if (MainGame.instance.GameState == 1 || MainGame.instance.GameState == 2)
+            {
+                ViewManager.Show<NoUIView>();
+                //Debug.Log("escapeToNoUI");
+            }
+            else
+            {
+                ViewManager.Show<LobbyMenuView>();
+                //Debug.Log("escapeToLobby");
+
+            }
+            PersonaliseCharacter.instance.OnSavePersonnalisation();
+            ViewManager.GetView<EscapeMenuView>()._sceneCamera.gameObject.SetActive(false);
+        }
+    }
 }
