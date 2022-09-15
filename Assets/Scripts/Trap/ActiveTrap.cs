@@ -69,6 +69,7 @@ public class ActiveTrap : NetworkBehaviour
         else if (trap.TrapType == TrapType.Stand)//trap.Trap.GetComponent<Animator>())
         {
             trap.Trap.GetComponent<Animator>()?.SetBool("up", true);
+            trap.Trap.GetComponent<Animator>()?.SetBool("down", false);
         }
 
         foreach (GameObject DeadZone in trap.DeathZone)
@@ -97,6 +98,7 @@ public class ActiveTrap : NetworkBehaviour
         }
         else if (trap.TrapType == TrapType.Stand)//trap.Trap.GetComponent<Animator>())
         {
+            trap.Trap.GetComponent<Animator>()?.SetBool("up", false);
             trap.Trap.GetComponent<Animator>()?.SetBool("down", true);
         }
 
@@ -129,17 +131,18 @@ public class ActiveTrap : NetworkBehaviour
             StartCoroutine(Spectator.instance.ActiveSpectatorMode());
             gameObject.GetComponent<NewPlayerMovement>().canMove = false;
             gameObject.GetComponent<MouseLook>().canRotate = false;
-            gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            gameObject.transform.GetChild(1).gameObject.SetActive(false);
-        }
+            gameObject.GetComponent<PlayerReferences>().Character.SetActive(true);
+            gameObject.GetComponent<PlayerReferences>().Capsule.SetActive(false);
 
+
+        }
     }
 
     [Command(requiresAuthority = false)]
     public void CmdSendDied(string id)
     {
         MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(id)] = false;
-        Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(id)].GetComponent<ActiveTrap>().RpcOnDied();
+        RpcOnDied();
         RpcOnDiedSound();
     }
 
@@ -149,8 +152,14 @@ public class ActiveTrap : NetworkBehaviour
         gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("Death2");
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdSendFight()
+    {
+        MainGame.instance.GameState = 2;
+    }
 
-        public void OnTriggerEnter(Collider other)
+
+    public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Trigger")
         {
@@ -178,7 +187,7 @@ public class ActiveTrap : NetworkBehaviour
         if (other.tag=="FinishZone")
         {
             Debug.Log("Fight");
-            MainGame.instance.GameState = 2;
+            CmdSendFight();
         }
 
 

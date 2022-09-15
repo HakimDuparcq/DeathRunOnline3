@@ -110,7 +110,10 @@ public class Fight : NetworkBehaviour
             }
             if (MainGame.instance.playersHealth[MainGame.instance.playersIdServeur.IndexOf(playerId)]<=0)
             {
-                Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(playerId)].GetComponent<ActiveTrap>().RpcOnDied();
+                //Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(playerId)].GetComponent<ActiveTrap>().RpcOnDied();
+                MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(playerId)] = false;
+                gameObject.GetComponent<ActiveTrap>().RpcOnDied();
+                gameObject.GetComponent<ActiveTrap>().RpcOnDiedSound();
             }
             RpcHit(point, false );
         }

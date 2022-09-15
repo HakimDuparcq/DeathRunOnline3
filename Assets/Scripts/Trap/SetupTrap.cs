@@ -39,7 +39,14 @@ public class SetupTrap : MonoBehaviour
                 Traps[i].Trap.GetComponent<Rigidbody>().isKinematic = true;   // reset chandelier 
                 Traps[i].Trap.transform.localPosition = new Vector3(5.9f, 7.2613f, -46.7287f);
             }
-                Traps[i].isActivable = true;
+
+            if (Traps[i].TrapType == TrapType.Stand)
+            {
+                
+            }
+
+            Traps[i].isActivable = true;
+            Traps[i].Trigger.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 

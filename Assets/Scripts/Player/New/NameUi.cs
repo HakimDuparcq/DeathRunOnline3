@@ -21,10 +21,16 @@ public class NameUi : MonoBehaviour
         }
     }
 
+
     void Update()
     {
-        NameUI.transform.LookAt(NameUI.transform.position + Cam.transform.rotation* new Vector3(0,0,1), Cam.transform.rotation * new Vector3(0, 1,0) );
+        if (Cam!=null && NameUI!=null)
+        {
+            NameUI.transform.LookAt(NameUI.transform.position + Cam.transform.rotation * new Vector3(0, 0, 1), Cam.transform.rotation * new Vector3(0, 1, 0));
+
+        }
     }
+
 
 
     IEnumerator GetName()
