@@ -79,30 +79,24 @@ public class Fight : NetworkBehaviour
                     //Debug.Log(hit.transform.name);
                     if (hit.transform.gameObject.layer == 6) // 6 Ground , 8 OtherPlayer
                     {
-                        CmdHit(null, hit.point);
+                        CmdHit(100, hit.point);
                     }
                     if (hit.transform.gameObject.layer == 8)
                     {
                         //Debug.Log("Remove life to " + hit.transform.parent.name);
-                        CmdHit(hit.transform.parent.GetComponent<PlayerSetup>().netId, hit.point);
+                        hit.transform.parent.GetComponent<Fight>().CmdHit(hit.transform.parent.GetComponent<NetworkIdentity>().netId, hit.point);
 
                     }
                 }
                 
             }
         }
-
-
-
-        
-
-
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdHit(string playerId, Vector3 point)
+    public void CmdHit(uint playerId, Vector3 point)
     {
-        if (playerId!=null)
+        if (playerId!=100)
         {
             if (MainGame.instance.GameState == 2)
             {

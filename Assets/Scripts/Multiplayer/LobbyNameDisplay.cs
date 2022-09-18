@@ -81,7 +81,7 @@ public class LobbyNameDisplay : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdLobbyRole(string netId, bool role)
+    public void CmdLobbyRole(uint netId, bool role)
     {
         MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)] = role;
         
@@ -89,8 +89,17 @@ public class LobbyNameDisplay : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcLobbyRole(string netId, bool role)
+    public void RpcLobbyRole(uint netId, bool role)
     {
+        Debug.Log("client Number " + MainGame.instance.playersIdServeur.IndexOf(netId));
+        if (MainGame.instance.playersIdServeur.Contains(netId))
+        {
+            Debug.Log("client  " + netId + " in playersIdServeur"  );
+        }
+        else
+        {
+            Debug.Log("client  " + netId + " NOT NOT in playersIdServeur");
+        }
         Roles[MainGame.instance.playersIdServeur.IndexOf(netId)].isOn = role;
 
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using Mirror;
 
 public class PersonaliseCharacter : MonoBehaviour
 {
@@ -225,7 +226,7 @@ public class PersonaliseCharacter : MonoBehaviour
         
     }
 
-    public IEnumerator CharacterUpdate2(string IdPlayer)
+    public IEnumerator CharacterUpdate2(uint IdPlayer)
     {
         yield return new WaitForSeconds(2);
         //Debug.LogWarning(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)]);

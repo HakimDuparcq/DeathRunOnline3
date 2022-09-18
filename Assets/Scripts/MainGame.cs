@@ -12,7 +12,7 @@ public class MainGame : NetworkBehaviour
 
 
     public readonly  SyncList<string> playersNameServeur = new SyncList<string>();
-    public readonly  SyncList<string> playersIdServeur = new SyncList<string>();
+    public readonly  SyncList<uint> playersIdServeur = new SyncList<uint>();
     public readonly  SyncList< List<int>>playersCharacterServer = new SyncList<List<int>>();
     public readonly  SyncList<bool> playersIsAliveServer = new SyncList<bool>();
     public readonly SyncList<bool> playersRole = new SyncList<bool>();
@@ -20,7 +20,7 @@ public class MainGame : NetworkBehaviour
 
 
     public string LocalPlayerName;
-    public string LocalPlayerId;
+    public uint LocalPlayerId;
     public GameObject LocalPlayer;
     public int LocalHealth;
 
@@ -64,7 +64,7 @@ public class MainGame : NetworkBehaviour
 
     }
 
-    public  void RegisterPlayer(string Name, string Id, List<int> playersCharacter, GameObject Player)
+    public  void RegisterPlayer(string Name, uint Id, List<int> playersCharacter, GameObject Player)
     {
         Player.transform.name = Name;
         CmdPlayerJoin(Name, Id, playersCharacter);
@@ -73,7 +73,7 @@ public class MainGame : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdPlayerJoin(string Name, string Id, List<int> playersCharacter)
+    public void CmdPlayerJoin(string Name, uint Id, List<int> playersCharacter)
     {
 
         playersNameServeur.Add(Name);
@@ -94,7 +94,7 @@ public class MainGame : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdOnLocalPlayerDeconnect(string LocalPlayerIdd)
+    public void CmdOnLocalPlayerDeconnect(uint LocalPlayerIdd)
     {
         int indexPlayer = playersIdServeur.IndexOf(LocalPlayerIdd);
         playersRole.RemoveAt(indexPlayer);
@@ -110,7 +110,7 @@ public class MainGame : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcOnLocalPlayerDeconnect(string LocalPlayerIdInFonction)
+    public void RpcOnLocalPlayerDeconnect(uint LocalPlayerIdInFonction)
     {
         if (LocalPlayerId ==LocalPlayerIdInFonction)
         {

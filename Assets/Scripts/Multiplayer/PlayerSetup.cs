@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class  PlayerSetup : NetworkBehaviour
 {
     public string Name;
-    public string netId;
 
     public bool isTrapper;
 
@@ -98,7 +97,6 @@ public class  PlayerSetup : NetworkBehaviour
 
         if (isLocalPlayer)
         {
-            netId = GetComponent<NetworkIdentity>().netId.ToString();
             Name = PlayerPrefs.GetString("PlayerName");
             MainGame.instance.RegisterPlayer(Name, netId, PersonaliseCharacter.instance.playersCharacter,  gameObject);
 
@@ -124,7 +122,6 @@ public class  PlayerSetup : NetworkBehaviour
             gameObject.GetComponent<MouseLook>().enabled = false;
 
             CameraPlayer.gameObject.SetActive(false);
-            netId = GetComponent<NetworkIdentity>().netId.ToString();
             
             StartCoroutine(WaitConnexion());
             
@@ -138,11 +135,6 @@ public class  PlayerSetup : NetworkBehaviour
 
         //StartCoroutine(SetGameCharacters());
 
-
-
-
-
-
     }
 
 
@@ -152,9 +144,9 @@ public class  PlayerSetup : NetworkBehaviour
     IEnumerator WaitConnexion()
     {
         yield return new WaitForSeconds(1);
-        if (MainGame.instance.playersIdServeur.Contains(GetComponent<NetworkIdentity>().netId.ToString()))
+        if (MainGame.instance.playersIdServeur.Contains(netId))
         {
-            int indice = MainGame.instance.playersIdServeur.IndexOf(GetComponent<NetworkIdentity>().netId.ToString());
+            int indice = MainGame.instance.playersIdServeur.IndexOf(netId);
             gameObject.transform.name = MainGame.instance.playersNameServeur[indice];
             Name = MainGame.instance.playersNameServeur[indice];
         }
@@ -164,7 +156,6 @@ public class  PlayerSetup : NetworkBehaviour
         }
     }
 
-   
 
 
 
@@ -218,7 +209,7 @@ public class  PlayerSetup : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdSetCharacter(List<int> playersCharacter, string IdPlayer)
+    public void CmdSetCharacter(List<int> playersCharacter, uint IdPlayer)
     {
         MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)] = playersCharacter;
 
@@ -231,7 +222,7 @@ public class  PlayerSetup : NetworkBehaviour
 
 
     [ClientRpc]
-    public void RpcReceiveSetCharacter(string IdPlayer)
+    public void RpcReceiveSetCharacter(uint IdPlayer)
     {
         if (netId == IdPlayer)
         {

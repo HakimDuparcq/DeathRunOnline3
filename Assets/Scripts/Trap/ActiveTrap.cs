@@ -126,7 +126,7 @@ public class ActiveTrap : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            ChatBehaviour.instance.CmdSendMessage("Died in Combat", MainGame.instance.LocalPlayerName, "");
+            ChatBehaviour.instance.CmdSendMessage("Died in Combat", MainGame.instance.LocalPlayerName, 100);
             gameObject.GetComponent<Animator>().SetBool("death", true);
             StartCoroutine(Spectator.instance.ActiveSpectatorMode());
             gameObject.GetComponent<NewPlayerMovement>().canMove = false;
@@ -139,7 +139,7 @@ public class ActiveTrap : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdSendDied(string id)
+    public void CmdSendDied(uint id)
     {
         MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(id)] = false;
         RpcOnDied();

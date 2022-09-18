@@ -17,7 +17,7 @@ public class ChatBehaviour : NetworkBehaviour
     public TMP_InputField inputField = null;
 
 
-    private static event Action<string, string> OnMessage;
+    private static event Action<string, uint> OnMessage;
 
 
     public int inputState = 1;
@@ -99,7 +99,7 @@ public class ChatBehaviour : NetworkBehaviour
         OnMessage -= HandleNewMessage;
     }
 
-    private void HandleNewMessage(string message, string ID)
+    private void HandleNewMessage(string message, uint ID)
     {
         string[] Chat = chatAllText.text.Split('\n');
         for (int i = 0; i < Chat.Length; i++)
@@ -153,14 +153,14 @@ public class ChatBehaviour : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSendMessage(string message, string name, string ID)
+    public void CmdSendMessage(string message, string name, uint ID)
     {
         //RpcHandleMessage($"[{connectionToClient.connectionId}]: {message}");
         RpcHandleMessage($"[{name}]: {message}", ID);
     }
 
     [ClientRpc]
-    public void RpcHandleMessage(string message, string ID)
+    public void RpcHandleMessage(string message, uint ID)
     {
         OnMessage?.Invoke($"{message}", ID);
     }

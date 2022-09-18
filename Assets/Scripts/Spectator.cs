@@ -119,26 +119,26 @@ public class Spectator : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdDisableDeadPlayerCollider(string ID)
+    public void CmdDisableDeadPlayerCollider(uint ID)
     {
         RpcDisableDeadPlayerCollider(ID);
     }
 
     [ClientRpc]
-    public void RpcDisableDeadPlayerCollider(string ID)
+    public void RpcDisableDeadPlayerCollider(uint ID)
     {
         Players[MainGame.instance.playersIdServeur.IndexOf(ID)].GetComponent<CharacterController>().enabled = false;
         Players[MainGame.instance.playersIdServeur.IndexOf(ID)].transform.GetChild(1).GetComponent<CapsuleCollider>().enabled = false;
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdActiveDeadPlayerCollider(string ID)
+    public void CmdActiveDeadPlayerCollider(uint ID)
     {
         RpcActiveDeadPlayerCollider(ID);
     }
 
     [ClientRpc]
-    public void RpcActiveDeadPlayerCollider(string ID)
+    public void RpcActiveDeadPlayerCollider(uint ID)
     {
         //Players[MainGame.instance.playersIdServeur.IndexOf(ID)].GetComponent<CharacterController>().enabled = true;
         Players[MainGame.instance.playersIdServeur.IndexOf(ID)].transform.GetChild(1).gameObject.SetActive(true);
