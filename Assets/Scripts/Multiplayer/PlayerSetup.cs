@@ -18,9 +18,10 @@ public class  PlayerSetup : NetworkBehaviour
     public Transform SpawnEndGameTrapper;
     public Transform SpawnEndGameAttacker;
 
-    private int spawnTenTime1 = 20;
-    private int spawnTenTime2 = 20;
-
+    
+    private bool spawnGS1 = true;
+    private bool spawnGS2 = true;
+    
     public Camera CameraPlayer;
 
     
@@ -32,7 +33,56 @@ public class  PlayerSetup : NetworkBehaviour
 
     public void Update()
     {
-        if (isLocalPlayer &&  MainGame.instance.GameState == 1 && spawnTenTime1 > 0 )
+        TPPlayerGameStateChange();
+
+    }
+
+    public void TPPlayerGameStateChange()
+    {
+        if (isLocalPlayer && MainGame.instance.GameState == 1 && spawnGS1 == true)
+        {
+            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
+            {
+                transform.position = SpawnTrapper.position;
+                //Debug.Log("TeleportTrapper " + gameObject.name);
+            }
+            else
+            {
+                transform.position = SpawnAttacker.position;
+                //Debug.Log("TeleportAttack " + gameObject.name);
+            }
+            spawnGS1 = false;
+            Debug.Log("TP Local Player GameState 1");
+        }
+
+
+
+        if (isLocalPlayer && MainGame.instance.GameState == 2 && spawnGS2 == true)
+        {
+            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
+            {
+                transform.position = SpawnEndGameTrapper.position;
+            }
+            else
+            {
+                transform.position = SpawnEndGameAttacker.position;
+            }
+            spawnGS2 = false;
+            Debug.Log("TP Local Player GameState 2");
+
+        }
+
+        if (MainGame.instance.GameState == 0)
+        {
+            spawnGS1 = true;
+            spawnGS2 = true;
+        }
+
+    }
+    /*
+    private void OldTP()
+    {
+        if (isLocalPlayer && MainGame.instance.GameState == 1 && spawnTenTime1 > 0)
         {
             if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
             {
@@ -47,7 +97,7 @@ public class  PlayerSetup : NetworkBehaviour
             spawnTenTime1 -= 1;
             Debug.Log("TP Local Player GameState 1");
         }
-       
+
 
 
         if (isLocalPlayer && MainGame.instance.GameState == 2 && spawnTenTime2 > 0)
@@ -70,14 +120,13 @@ public class  PlayerSetup : NetworkBehaviour
             spawnTenTime1 = 20;
             spawnTenTime2 = 60;
         }
-
-    }
+    }*/
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        MainGame.instance = GameObject.Find("MainGame").GetComponent<MainGame>();
+        //MainGame.instance = GameObject.Find("MainGame").GetComponent<MainGame>();
 
         SpawnTrapper = GameObject.Find("Spawn Trapper").transform;
         SpawnAttacker = GameObject.Find("Spawn Attacker").transform;
@@ -105,7 +154,7 @@ public class  PlayerSetup : NetworkBehaviour
             MainGame.instance.LocalPlayer = gameObject;
 
             CameraPlayer.GetComponent<Camera>().depth = 1; //Keep camera player
-            transform.position = SpawnLobby.position; // Spawn Position
+            //transform.position = SpawnLobby.position; // Spawn Position
 
             gameObject.GetComponent<CharacterController>().enabled = true;
             SetupSkin(true);

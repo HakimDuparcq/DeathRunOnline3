@@ -29,15 +29,15 @@ public class MainGame : NetworkBehaviour
 
     public bool isTrapper;
 
-    
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
 
     void Start()
     {
-        
-        instance = this;
-        gameObject.SetActive(true);
         Deconnexion.OnExit += OnLocalPlayerDeconnected;
     }
 

@@ -73,7 +73,8 @@ public class EndGame : NetworkBehaviour
         
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().PlayerCamera.GetComponent<Camera>().fieldOfView = 91.7f;
 
-        StartCoroutine(TpPlayers());
+        //StartCoroutine(TpPlayers());
+        TpPlayerMirror();
 
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {
@@ -126,7 +127,16 @@ public class EndGame : NetworkBehaviour
     }
 
 
-    
+    public void TpPlayerMirror()
+    {
+        for (int i = 0; i < Spectator.instance.Players.Count; i++)
+        {
+            Spectator.instance.Players[i].GetComponent<NetworkTransform>().CmdTeleport(
+                                   Spectator.instance.Players[i].GetComponent<PlayerSetup>().SpawnLobby.position  , 
+                                   Quaternion.identity);
+        }
+        
+    }
 
 
 
