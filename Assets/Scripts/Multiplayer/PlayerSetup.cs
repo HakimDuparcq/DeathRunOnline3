@@ -276,7 +276,7 @@ public class  PlayerSetup : NetworkBehaviour
         if (netId == IdPlayer)
         {
             //Debug.Log(gameObject);
-            StartCoroutine( PersonaliseCharacter.instance.CharacterUpdate2(IdPlayer));
+            StartCoroutine( PersonaliseCharacter.instance.CharacterUpdateAllPlayer(IdPlayer));
         }
     }
 

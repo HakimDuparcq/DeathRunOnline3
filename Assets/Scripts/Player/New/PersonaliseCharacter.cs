@@ -46,6 +46,7 @@ public class PersonaliseCharacter : MonoBehaviour
 
     public void OnClickArrowsCharacters(int MagnusOneLeftandOneRight)
     {
+        /*
         if (Character.actualProp + MagnusOneLeftandOneRight == -1)
         {
             Character.actualProp = Character.Props.Length;
@@ -63,39 +64,28 @@ public class PersonaliseCharacter : MonoBehaviour
         if (Character.actualProp - 1>=0)
         {
             Character.Props[Character.actualProp - 1].SetActive(true);
-        }
-    }
+        }*/
 
-
-    public void OonClickArrowsCharacters(int MagnusOneLeftandOneRight)
-    {
-        if (Character.actualProp>1 && Character.actualProp< Character.Props.Length )
+        if (Character.actualProp + MagnusOneLeftandOneRight == -1)
         {
-            Character.actualProp += MagnusOneLeftandOneRight;
+            Character.actualProp = Character.Props.Length - 1;
         }
-        else if (Character.actualProp == 1 && MagnusOneLeftandOneRight == -1 )
+        else if (Character.actualProp + MagnusOneLeftandOneRight == Character.Props.Length)
         {
-            Character.actualProp = Character.Props.Length;
+            Character.actualProp = 0;
         }
-        else if (Character.actualProp == Character.Props.Length && MagnusOneLeftandOneRight == 1)
+        else
         {
-            Character.actualProp =1 ;
+            Character.actualProp = Character.actualProp + MagnusOneLeftandOneRight;
         }
-        else if (Character.actualProp == 1 && MagnusOneLeftandOneRight == 1)
-        {
-            Character.actualProp += MagnusOneLeftandOneRight;
-        }
-        else if (Character.actualProp == Character.Props.Length && MagnusOneLeftandOneRight ==-1)
-        {
-            Character.actualProp += MagnusOneLeftandOneRight;
-        }
-
         Character.TextNumber.text = Character.actualProp.ToString() + "/" + Character.Props.Length;
         foreach (GameObject prop in Character.Props)
         {
             prop.SetActive(false);
         }
-        Character.Props[Character.actualProp - 1].SetActive(true);
+
+        Character.Props[Character.actualProp].SetActive(true);
+        
     }
 
     public void OnClickArrowsPropsLeft(int MagnusOneLeftandOneRight)
@@ -163,7 +153,7 @@ public class PersonaliseCharacter : MonoBehaviour
             {
                 Material[] Mats =  new Material[] { ColorMaterials[actualColor] };
                 Character.Props[i].GetComponent<SkinnedMeshRenderer>().materials = Mats;
-                Debug.Log(ColorMaterials[actualColor]);
+                //Debug.Log(ColorMaterials[actualColor]);
             }
             
         }
@@ -178,6 +168,7 @@ public class PersonaliseCharacter : MonoBehaviour
         PlayerPrefs.SetInt("Character", Character.actualProp);
         PlayerPrefs.SetInt("PropLeft", PropsLeft.actualProp);
         PlayerPrefs.SetInt("PropRight", PropsRight.actualProp);
+        PlayerPrefs.SetInt("Color", actualColor);
         List<int> Config = new List<int>();/*
         Config.Add(Character.actualProp);
         Config.Add(PropsLeft.actualProp);
@@ -197,7 +188,16 @@ public class PersonaliseCharacter : MonoBehaviour
             Character.actualProp = PlayerPrefs.GetInt("Character");
             PropsLeft.actualProp = PlayerPrefs.GetInt("PropLeft");
             PropsRight.actualProp = PlayerPrefs.GetInt("PropRight");
+            actualColor = PlayerPrefs.GetInt("Color");
             CharacterUpdate();
+        }
+        else
+        {
+            Character.actualProp =1;
+            PropsLeft.actualProp = 1;
+            PropsRight.actualProp = 1;
+            actualColor = 1;
+
         }
     }
 
@@ -205,7 +205,7 @@ public class PersonaliseCharacter : MonoBehaviour
     {
         for (int i = 0; i < MainGame.instance.playersIdServeur.Count; i++)
         {
-            StartCoroutine(CharacterUpdate2(MainGame.instance.playersIdServeur[i]) );
+            StartCoroutine(CharacterUpdateAllPlayer(MainGame.instance.playersIdServeur[i]) );
             //Debug.Log("PersoCharacter " + i);
         }
 
@@ -220,31 +220,48 @@ public class PersonaliseCharacter : MonoBehaviour
         playersCharacter.Add(Character.actualProp);
         playersCharacter.Add(PropsLeft.actualProp);
         playersCharacter.Add(PropsRight.actualProp);
+        playersCharacter.Add(actualColor);
 
         MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
         //Debug.Log("Update Perso Number i ");
         
     }
 
-    public IEnumerator CharacterUpdate2(uint IdPlayer)
+    public IEnumerator CharacterUpdateAllPlayer(uint IdPlayer)
     {
         yield return new WaitForSeconds(2);
         //Debug.LogWarning(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)]);
         //MainGame.instance.LocalPlayer.GetComponent<PlayerSetup>().CmdSetCharacter(playersCharacter, MainGame.instance.LocalPlayerId);
         PlayerChange(Spectator.instance.Players[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)].transform.GetChild(0).gameObject);
-        
+
+        int number = MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][3];
+        Material[] Mats = new Material[] { ColorMaterials[number] };
+        //Character.Props[i].GetComponent<SkinnedMeshRenderer>().materials = Mats;
+
         foreach (GameObject prop in Character.Props)
         {
             prop.SetActive(false);
         }
+        /*
         if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0]  != 0)
         {
             Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] -1].SetActive(true);
+            Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] - 1].GetComponent<SkinnedMeshRenderer>().materials = Mats;
         }
         else
         {
             Character.Props[0].SetActive(true);
-        }
+            Character.Props[0].GetComponent<SkinnedMeshRenderer>().materials = Mats;
+        
+
+        }*/
+
+
+        Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] ].SetActive(true);
+        Character.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] - 1].GetComponent<SkinnedMeshRenderer>().materials = Mats;
+        
+        
+        
 
         foreach (GameObject prop in PropsLeft.Props)
         {
@@ -253,6 +270,7 @@ public class PersonaliseCharacter : MonoBehaviour
         if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1 >=0)
         {
             PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].SetActive(true);
+            PropsLeft.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] - 1].GetComponent<MeshRenderer>().materials = Mats; 
         }
 
 
@@ -263,8 +281,11 @@ public class PersonaliseCharacter : MonoBehaviour
         if (MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] >=0)
         {
             PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] -1 ].SetActive(true);
+            PropsRight.Props[MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2] -1 ].GetComponent<MeshRenderer>().materials = Mats; 
 
         }
+
+
 
         //Debug.Log("Switch to costume " +MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][0] + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][1] + MainGame.instance.playersCharacterServer[MainGame.instance.playersIdServeur.IndexOf(IdPlayer)][2]);
         PlayerChange(PlayerCharacer);
@@ -284,6 +305,12 @@ public class PersonaliseCharacter : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             PropsRight.Props[i] = PlayerCharacer.transform.GetChild(12).GetChild(0).GetChild(i+4).gameObject;
+        }
+        for (int i = 0; i < Character.Props.Length; i++)
+        {
+            Material[] Mats = new Material[] { ColorMaterials[actualColor] };
+            Character.Props[i].GetComponent<SkinnedMeshRenderer>().materials = Mats;
+            //Debug.Log(ColorMaterials[actualColor]);
         }
     }
 
