@@ -81,7 +81,7 @@ public class NewPlayerMovement : MonoBehaviour
         {
             move = Vector3.Normalize(move);
         }
-        if (canMove)
+        if (canMove  && controller.enabled)
         {
             controller.Move(move * speed * Time.deltaTime);
         }
@@ -95,7 +95,7 @@ public class NewPlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             animator.SetBool("jump", true);
         }
-        if (!isGrounded  && Cursor.lockState == CursorLockMode.Locked && MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)])
+        if (!isGrounded  && Cursor.lockState == CursorLockMode.Locked && canMove)//  && MainGame.instance.playersIsAliveServer[MainGame.instance.playersIdServeur.IndexOf(MainGame.instance.LocalPlayerId)])
         {
             animator.SetBool("jump", false);
         }
@@ -107,7 +107,11 @@ public class NewPlayerMovement : MonoBehaviour
         else
         {
             velocity.y += gravity * Time.deltaTime;
-            controller.Move(velocity * Time.deltaTime);
+            if (controller.enabled)
+            {
+                controller.Move(velocity * Time.deltaTime);
+            }
+            
         }
 
 

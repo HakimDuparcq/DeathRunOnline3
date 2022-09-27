@@ -9,7 +9,7 @@ TagManager:
   - Trigger
   - FinishZone
   - WallColliderOffTrapper
-  - Admix
+  - Fall
   layers:
   - Default
   - TransparentFX

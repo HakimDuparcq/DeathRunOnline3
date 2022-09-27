@@ -156,8 +156,22 @@ public class ActiveTrap : NetworkBehaviour
     public void CmdSendFight()
     {
         MainGame.instance.GameState = 2;
+        gameObject.GetComponent<PlayerSetup>().TPlayerGameStateChange(2);
     }
 
+    
+    public void PlayerFall(bool isTrapper)
+    {
+        gameObject.GetComponent<CharacterController>().enabled = false;
+        if (isTrapper)
+        {
+            gameObject.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(4.46f, 10.62f, -5.5f), Quaternion.identity);
+        }
+        else
+        {
+            gameObject.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
+        }
+    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -187,9 +201,23 @@ public class ActiveTrap : NetworkBehaviour
         if (other.tag=="FinishZone")
         {
             Debug.Log("Fight");
-            CmdSendFight();
+            if (isLocalPlayer)
+            {
+                CmdSendFight();
+            }
         }
 
+        if (other.tag == "Fall")
+        {
+            if (isLocalPlayer)
+            {
+                PlayerFall(gameObject.GetComponent<PlayerSetup>().isTrapper);
+                Debug.Log("Fall");
+
+                
+            }
+            
+        }
 
     }
 
@@ -200,7 +228,6 @@ public class ActiveTrap : NetworkBehaviour
             SetupTrap.instance.HelpText.gameObject.SetActive(false);
         }
     }
-
 
 
 }

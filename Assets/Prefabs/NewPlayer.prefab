@@ -5965,6 +5965,8 @@ MonoBehaviour:
   SpawnEndGameTrapper: {fileID: 0}
   SpawnEndGameAttacker: {fileID: 0}
   CameraPlayer: {fileID: 7730073752191818818}
+  posLocalPlayer: {x: 0, y: -0.65, z: -0.5}
+  posOtherPlayers: {x: 0, y: -0.9, z: 0}
 --- !u!114 &1976164825161144913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6054,7 +6056,7 @@ MonoBehaviour:
   Camera: {fileID: 7730073752191818818}
   BloodEffectContainer: {fileID: 0}
   maxDistanceRay: 2
-  TimeBetweenClick: 0.4
+  TimeBetweenClick: 0.55
   Compteur: 0
   AllowToClick: 1
 --- !u!114 &4873362825381022686

@@ -17,7 +17,7 @@ public class TestNetwork : NetworkBehaviour
         {
             if (Input.GetKey(KeyCode.A))
             {
-                CmdTest(gameObject.name, gameObject.GetComponent<NetworkIdentity>(), netId);
+                CmdTestTp();
             }
         }
 
@@ -26,16 +26,19 @@ public class TestNetwork : NetworkBehaviour
 
 
     [Command(requiresAuthority = false)]
-    public void CmdTest(string fromPlayer, NetworkIdentity NetPlayer, uint NetOk)
+    public void CmdTestTp()
     {
-        RpcOnTest(fromPlayer, NetPlayer, NetOk);
+        RpcOnTest();
     }
 
     [ClientRpc]
-    public void RpcOnTest(string fromPlayer, NetworkIdentity NetPlayer, uint NetOk)
+    public void RpcOnTest()
     {
         //Debug.Log("From " + fromPlayer + "  to " + gameObject.name);
-        Debug.Log(NetPlayer.netId + "    " + NetPlayer.ToString() + "    " + NetOk);
+        MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
+        MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnAttacker.position, Quaternion.identity);
+        Debug.Log("1");
+
 
     }
 

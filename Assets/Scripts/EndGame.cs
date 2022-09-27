@@ -12,15 +12,17 @@ public class EndGame : NetworkBehaviour
         instance = this;
     }
 
+    [ClientCallback]
     void Update()
     {
         if (MainGame.instance.GameState != 0 )
         {
-            if (isTeamDead(true))
+            if (isTeamDead(trapperTeam :true))
             {
                 CmdGameEnd(false);
+
             }
-            if (isTeamDead(false))
+            if (isTeamDead(trapperTeam : false))
             {
                 CmdGameEnd(true);
             }
@@ -52,29 +54,26 @@ public class EndGame : NetworkBehaviour
             Debug.Log("relive"+i);
         }
 
-
-
-        RpcGameEnd();
-        
+        RpcGameEnd(isTrapperWinner);
     }
 
 
     [ClientRpc]
-    public void RpcGameEnd()
+    public void RpcGameEnd(bool isTrapperWinner)
     {
-
-        
-        StartCoroutine(Restart());
+        SendWinner(isTrapperWinner);
+        TpPlayerMirror(state:2);
+        //StartCoroutine(Restart(isTrapperWinner));
     }
 
-    private IEnumerator Restart()
+    private IEnumerator Restart(bool isTrapperWinner)
     {
         yield return new WaitForSeconds(5f);
         
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().PlayerCamera.GetComponent<Camera>().fieldOfView = 91.7f;
 
         //StartCoroutine(TpPlayers());
-        TpPlayerMirror();
+        TpPlayerMirror(10);
 
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {
@@ -110,7 +109,7 @@ public class EndGame : NetworkBehaviour
 
         DoorManager.instance.CloseDoorNumber(1);
     }
-
+    /*
     public IEnumerator TpPlayers()
     {
         float tempo = 0.5f;
@@ -125,20 +124,51 @@ public class EndGame : NetworkBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+    */
 
-
-    public void TpPlayerMirror()
+    public void TpPlayerMirror(int state)
     {
+        Debug.Log("TP Game State ");
+        GameObject LocalPlayer = MainGame.instance.LocalPlayer;
+        LocalPlayer.GetComponent<CharacterController>().enabled = false;
+
+        if (state == 1)
+        {
+            LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
+        }
+        else if (true)
+        {
+
+        }
+        else if (true)
+        {
+
+        }
+        
+        /*
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {
             Spectator.instance.Players[i].GetComponent<NetworkTransform>().CmdTeleport(
                                    Spectator.instance.Players[i].GetComponent<PlayerSetup>().SpawnLobby.position  , 
                                    Quaternion.identity);
-        }
-        
+        }*/
+
     }
 
 
-
+    
+    public void SendWinner(bool isTrapperWinner)
+    {
+        if (isTrapperWinner)
+        {
+            //ChatBehaviour.instance.RpcHandleMessage("Trappers Win This Round", 100);
+            ChatBehaviour.instance.HandleNewMessage("Trappers Win This Round", 100);
+        }
+        else
+        {
+            //ChatBehaviour.instance.RpcHandleMessage("Attackers Win This Round", 100);
+            ChatBehaviour.instance.HandleNewMessage("Attackers Win This Round", 100);
+        }
+    }
 
 }

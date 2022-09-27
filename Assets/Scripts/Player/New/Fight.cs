@@ -27,13 +27,13 @@ public class Fight : NetworkBehaviour
         BloodEffectContainer = GameObject.Find("BloodContainer").transform;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (!isLocalPlayer)
         {
-            return; 
+            return;
         }
-        if (Compteur>= TimeBetweenClick )
+        if (Compteur >= TimeBetweenClick)
         {
             AllowToClick = true;
             Compteur = 0;
@@ -43,6 +43,11 @@ public class Fight : NetworkBehaviour
             Compteur += Time.deltaTime;
         }
 
+        
+    }
+
+    void Update()
+    {
         var rayy = Camera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitt;
         //gameObject.GetComponent<CrossHairs>().CrossHairsActivationColor(false);
@@ -64,7 +69,7 @@ public class Fight : NetworkBehaviour
         if (Input.GetMouseButtonDown(0) && AllowToClick)
         {
             AllowToClick = false;
-            Compteur = 0; 
+            Compteur = 0;
             var ray = Camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, maxDistanceRay, layerBlood))
@@ -88,7 +93,7 @@ public class Fight : NetworkBehaviour
 
                     }
                 }
-                
+
             }
         }
     }
@@ -125,7 +130,7 @@ public class Fight : NetworkBehaviour
         if (isGround)
         {
             _blood = Instantiate(particleHitGround, BloodEffectContainer);  // particle
-            Debug.Log("HitGround" + gameObject);
+            //Debug.Log("HitGround" + gameObject);
             gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("HitGround");  //Audio
         }
         else

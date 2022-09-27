@@ -91,14 +91,14 @@ public class LobbyNameDisplay : NetworkBehaviour
     [ClientRpc]
     public void RpcLobbyRole(uint netId, bool role)
     {
-        Debug.Log("client Number " + MainGame.instance.playersIdServeur.IndexOf(netId));
+        //Debug.Log("client Number " + MainGame.instance.playersIdServeur.IndexOf(netId));
         if (MainGame.instance.playersIdServeur.Contains(netId))
         {
-            Debug.Log("client  " + netId + " in playersIdServeur"  );
+            //Debug.Log("client  " + netId + " in playersIdServeur"  );
         }
         else
         {
-            Debug.Log("client  " + netId + " NOT NOT in playersIdServeur");
+            //Debug.Log("client  " + netId + " NOT NOT in playersIdServeur");
         }
         Roles[MainGame.instance.playersIdServeur.IndexOf(netId)].isOn = role;
 

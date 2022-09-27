@@ -10,6 +10,7 @@ public class NameUi : MonoBehaviour
     public TextMeshProUGUI NameUI;
 
 
+    [ClientCallback]
     void Start()
     {
         StartCoroutine(GetName());
@@ -21,7 +22,7 @@ public class NameUi : MonoBehaviour
         }
     }
 
-
+    [ClientCallback]
     void Update()
     {
         if (Cam!=null && NameUI!=null)

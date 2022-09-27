@@ -552,6 +552,8 @@ namespace Mirror
 
             // TODO what about host mode?
             OnTeleport(destination);
+            //Debug.Log(gameObject);
+            gameObject.GetComponent<CharacterController>().enabled = true;
         }
 
         // server->client teleport to force position and rotation without interpolation.
@@ -568,6 +570,8 @@ namespace Mirror
 
             // TODO what about host mode?
             OnTeleport(destination, rotation);
+            //Debug.Log(gameObject);
+            gameObject.GetComponent<CharacterController>().enabled = true;
         }
 
         // Deprecated 2022-01-19
@@ -603,7 +607,7 @@ namespace Mirror
         // client->server teleport to force position and rotation without interpolation.
         // otherwise it would interpolate to a (far away) new position.
         // => manually calling Teleport is the only 100% reliable solution.
-        [Command]
+        [Command(requiresAuthority =false)]
         public void CmdTeleport(Vector3 destination, Quaternion rotation)
         {
             // client can only teleport objects that it has authority over.

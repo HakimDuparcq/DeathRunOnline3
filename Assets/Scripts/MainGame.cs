@@ -140,10 +140,21 @@ public class MainGame : NetworkBehaviour
         {
             LocalPlayer.GetComponent<NewPlayerMovement>().speed = 10;
         }
+        else
+        {
+            LocalPlayer.GetComponent<NewPlayerMovement>().speed = 6.5f;
+        }
+
+        EndGame.instance.TpPlayerMirror(10);
     }
 
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        //ViewManager.GetView<EscapeMenuView>()._sceneCamera.gameObject.SetActive(false);
 
+    }
 
 
 

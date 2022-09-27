@@ -12,19 +12,16 @@ public class  PlayerSetup : NetworkBehaviour
 
     public bool isTrapper;
 
-    public Transform SpawnTrapper;
-    public Transform SpawnAttacker;
-    public Transform SpawnLobby;
-    public Transform SpawnEndGameTrapper;
-    public Transform SpawnEndGameAttacker;
+    
 
     
     private bool spawnGS1 = true;
     private bool spawnGS2 = true;
     
     public Camera CameraPlayer;
+    public Vector3 posLocalPlayer;
+    public Vector3 posOtherPlayers;
 
-    
 
     public void Start()
     {
@@ -33,12 +30,13 @@ public class  PlayerSetup : NetworkBehaviour
 
     public void Update()
     {
-        TPPlayerGameStateChange();
 
     }
 
-    public void TPPlayerGameStateChange()
+
+    public void TPlayerGameStateChange()
     {
+        /*
         if (isLocalPlayer && MainGame.instance.GameState == 1 && spawnGS1 == true)
         {
             if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
@@ -54,9 +52,6 @@ public class  PlayerSetup : NetworkBehaviour
             spawnGS1 = false;
             Debug.Log("TP Local Player GameState 1");
         }
-
-
-
         if (isLocalPlayer && MainGame.instance.GameState == 2 && spawnGS2 == true)
         {
             if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
@@ -69,58 +64,36 @@ public class  PlayerSetup : NetworkBehaviour
             }
             spawnGS2 = false;
             Debug.Log("TP Local Player GameState 2");
-
         }
-
         if (MainGame.instance.GameState == 0)
         {
             spawnGS1 = true;
             spawnGS2 = true;
-        }
+        }*/
+
+
+
 
     }
-    /*
-    private void OldTP()
+
+    public void TPlayerGameStateChange(int state)
     {
-        if (isLocalPlayer && MainGame.instance.GameState == 1 && spawnTenTime1 > 0)
+        EndGame.instance.TpPlayerMirror(1);
+        /*
+        if (state == 1) 
         {
-            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
-            {
-                transform.position = SpawnTrapper.position;
-                //Debug.Log("TeleportTrapper " + gameObject.name);
-            }
-            else
-            {
-                transform.position = SpawnAttacker.position;
-                //Debug.Log("TeleportAttack " + gameObject.name);
-            }
-            spawnTenTime1 -= 1;
-            Debug.Log("TP Local Player GameState 1");
+            EndGame.instance.TpPlayerMirror();
+            //MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
+            //MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
         }
-
-
-
-        if (isLocalPlayer && MainGame.instance.GameState == 2 && spawnTenTime2 > 0)
+        else if (state == 2)
         {
-            if (MainGame.instance.playersRole[MainGame.instance.playersIdServeur.IndexOf(netId)])
-            {
-                transform.position = SpawnEndGameTrapper.position;
-            }
-            else
-            {
-                transform.position = SpawnEndGameAttacker.position;
-            }
-            spawnTenTime2 -= 1;
-            Debug.Log("TP Local Player GameState 2");
-
+            EndGame.instance.TpPlayerMirror();
+            //MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
+            //MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
         }
-
-        if (MainGame.instance.GameState == 0)
-        {
-            spawnTenTime1 = 20;
-            spawnTenTime2 = 60;
-        }
-    }*/
+        */
+    }
 
     public override void OnStartClient()
     {
@@ -128,11 +101,7 @@ public class  PlayerSetup : NetworkBehaviour
 
         //MainGame.instance = GameObject.Find("MainGame").GetComponent<MainGame>();
 
-        SpawnTrapper = GameObject.Find("Spawn Trapper").transform;
-        SpawnAttacker = GameObject.Find("Spawn Attacker").transform;
-        SpawnLobby = GameObject.Find("Spawn Lobby").transform;
-        SpawnEndGameTrapper = GameObject.Find("Spawn EndGame Trapper").transform;
-        SpawnEndGameAttacker = GameObject.Find("Spawn EndGame Attacker").transform;
+        
 
         
         Spectator.instance.Players.Add(gameObject);
@@ -241,11 +210,11 @@ public class  PlayerSetup : NetworkBehaviour
         gameObject.transform.GetChild(0).gameObject.SetActive(true);
         if (islocalPlayerrr)
         {
-            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0, -0.65f, -0.5f);
+            gameObject.transform.GetChild(0).transform.localPosition = posLocalPlayer; //new Vector3(0, -0.65f, -0.5f);
         }
         else
         {
-            gameObject.transform.GetChild(0).transform.localPosition = new Vector3(0, -0.8168f, 0);
+            gameObject.transform.GetChild(0).transform.localPosition = posOtherPlayers;//new Vector3(0, -0.8168f, 0);
         }
         gameObject.transform.GetChild(1).gameObject.GetComponent<MeshRenderer>().enabled = islocalPlayerrr;
         //Debug.Log(islocalPlayerrr, gameObject);
@@ -311,8 +280,12 @@ public class  PlayerSetup : NetworkBehaviour
 
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        CameraPlayer.gameObject.SetActive(false);
+
+    }
 
 
-
-   
 }

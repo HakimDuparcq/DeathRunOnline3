@@ -38,7 +38,6 @@ public class ChatBehaviour : NetworkBehaviour
     {
         if (!hasAuthority)
         {
-
             chatUI.SetActive(false);
             this.enabled = false;
         }
@@ -99,7 +98,7 @@ public class ChatBehaviour : NetworkBehaviour
         OnMessage -= HandleNewMessage;
     }
 
-    private void HandleNewMessage(string message, uint ID)
+    public void HandleNewMessage(string message, uint ID)
     {
         string[] Chat = chatAllText.text.Split('\n');
         for (int i = 0; i < Chat.Length; i++)

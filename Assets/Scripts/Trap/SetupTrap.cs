@@ -18,7 +18,7 @@ public class SetupTrap : MonoBehaviour
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             instance = this;
         }
     }
