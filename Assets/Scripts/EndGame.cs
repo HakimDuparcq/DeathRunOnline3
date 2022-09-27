@@ -61,9 +61,12 @@ public class EndGame : NetworkBehaviour
     [ClientRpc]
     public void RpcGameEnd(bool isTrapperWinner)
     {
-        SendWinner(isTrapperWinner);
-        TpPlayerMirror(state:2);
-        //StartCoroutine(Restart(isTrapperWinner));
+        if (isLocalPlayer)
+        {
+            SendWinner(isTrapperWinner);
+        }
+
+        StartCoroutine(Restart(isTrapperWinner));
     }
 
     private IEnumerator Restart(bool isTrapperWinner)
@@ -72,8 +75,7 @@ public class EndGame : NetworkBehaviour
         
         MainGame.instance.LocalPlayer.GetComponent<PlayerReferences>().PlayerCamera.GetComponent<Camera>().fieldOfView = 91.7f;
 
-        //StartCoroutine(TpPlayers());
-        TpPlayerMirror(10);
+        TpPlayerMirror(true, 0);
 
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {
@@ -126,25 +128,37 @@ public class EndGame : NetworkBehaviour
     }
     */
 
-    public void TpPlayerMirror(int state)
+    public void TpPlayerMirror(bool isTrapper, int gameState)
     {
-        Debug.Log("TP Game State ");
-        GameObject LocalPlayer = MainGame.instance.LocalPlayer;
-        LocalPlayer.GetComponent<CharacterController>().enabled = false;
+        Debug.Log("TP Trapper?" + isTrapper + " Game State:" + gameState);
+        //GameObject LocalPlayer = MainGame.instance.LocalPlayer;
+        MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
 
-        if (state == 1)
+        if (isTrapper && gameState == 0)
         {
-            LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnLobby.position, Quaternion.identity);
         }
-        else if (true)
+        else if (!isTrapper && gameState == 0)
         {
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnLobby.position, Quaternion.identity);
+        }
+        else if (isTrapper && gameState == 1)
+        {
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnTrapper.position, Quaternion.identity);
+        }
+        else if ( !isTrapper && gameState == 1)
+        {
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnAttacker.position, Quaternion.identity);
+        }
+        else if (isTrapper && gameState == 2)
+        {
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnEndGameTrapper.position, Quaternion.identity);
+        }
+        else if (!isTrapper && gameState == 2)
+        {
+            MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnEndGameAttacker.position, Quaternion.identity);
+        }
 
-        }
-        else if (true)
-        {
-
-        }
-        
         /*
         for (int i = 0; i < Spectator.instance.Players.Count; i++)
         {

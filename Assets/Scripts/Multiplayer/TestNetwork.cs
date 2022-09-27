@@ -13,11 +13,12 @@ public class TestNetwork : NetworkBehaviour
 
     void Update()
     {
-        if (isLocalPlayer)
+        if (true)
         {
             if (Input.GetKey(KeyCode.A))
             {
-                CmdTestTp();
+                //CmdTestTp();
+                Test();
             }
         }
 
@@ -37,13 +38,18 @@ public class TestNetwork : NetworkBehaviour
         //Debug.Log("From " + fromPlayer + "  to " + gameObject.name);
         MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
         MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnAttacker.position, Quaternion.identity);
-        Debug.Log("1");
-
+        Debug.Log("TEST");
 
     }
 
- 
- 
+    public void Test()
+    {
+        //Debug.Log("From " + fromPlayer + "  to " + gameObject.name);
+        MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
+        MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(MapPosition.instance.SpawnAttacker.position, Quaternion.identity);
+
+    }
+
 
 
 }

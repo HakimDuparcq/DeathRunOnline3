@@ -137,11 +137,26 @@ public class Fight : NetworkBehaviour
         {
             _blood = Instantiate(blood, BloodEffectContainer);
             gameObject.GetComponent<PlayerReferences>().Audio.GetComponent<AudioPlayerManager>().Play("HitBody");
+
+            RpcHitAnim();
         }
         _blood.transform.position = point;
         _blood.Play();
-    }        
+    }
 
+
+    public void RpcHitAnim()
+    {
+        gameObject.GetComponent<Animator>().SetBool("isHit", true);
+        StartCoroutine(StopIsHitAnim());
+    }
+
+    IEnumerator StopIsHitAnim()
+    {
+        yield return new WaitForSeconds(0.15f);
+        gameObject.GetComponent<Animator>().SetBool("isHit", false);
+
+    }
 
     public void CleanSceneEffectBlood()
     {

@@ -75,10 +75,10 @@ public class  PlayerSetup : NetworkBehaviour
 
 
     }
-
+    /*
     public void TPlayerGameStateChange(int state)
     {
-        EndGame.instance.TpPlayerMirror(1);
+        //EndGame.instance.TpPlayerMirror(isTrapper, MainGame.instance.GameState);
         /*
         if (state == 1) 
         {
@@ -92,8 +92,8 @@ public class  PlayerSetup : NetworkBehaviour
             //MainGame.instance.LocalPlayer.GetComponent<CharacterController>().enabled = false;
             //MainGame.instance.LocalPlayer.GetComponent<NetworkTransform>().CmdTeleport(new Vector3(-0.39f, 9.98f, -10.23f), Quaternion.identity);
         }
-        */
-    }
+        
+    }*/
 
     public override void OnStartClient()
     {

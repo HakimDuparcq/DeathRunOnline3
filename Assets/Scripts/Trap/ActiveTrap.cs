@@ -156,10 +156,18 @@ public class ActiveTrap : NetworkBehaviour
     public void CmdSendFight()
     {
         MainGame.instance.GameState = 2;
-        gameObject.GetComponent<PlayerSetup>().TPlayerGameStateChange(2);
+        RpcSendFight();
+
+        //EndGame.instance.TpPlayerMirror(MainGame.instance.isTrapper, MainGame.instance.GameState);
+        //gameObject.GetComponent<PlayerSetup>().TPlayerGameStateChange(2);
     }
 
-    
+    [ClientRpc]
+    public void RpcSendFight()
+    {
+        EndGame.instance.TpPlayerMirror(MainGame.instance.isTrapper, 2);
+    }
+
     public void PlayerFall(bool isTrapper)
     {
         gameObject.GetComponent<CharacterController>().enabled = false;
@@ -211,7 +219,8 @@ public class ActiveTrap : NetworkBehaviour
         {
             if (isLocalPlayer)
             {
-                PlayerFall(gameObject.GetComponent<PlayerSetup>().isTrapper);
+                // PlayerFall(gameObject.GetComponent<PlayerSetup>().isTrapper);
+                EndGame.instance.TpPlayerMirror(gameObject.GetComponent<PlayerSetup>().isTrapper, 1);
                 Debug.Log("Fall");
 
                 

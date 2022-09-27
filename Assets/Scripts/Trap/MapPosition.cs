@@ -12,5 +12,8 @@ public class MapPosition : MonoBehaviour
     public Transform SpawnEndGameTrapper;
     public Transform SpawnEndGameAttacker;
 
-    
+    public void Awake()
+    {
+        instance = this;
+    }
 }

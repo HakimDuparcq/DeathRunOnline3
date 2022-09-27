@@ -145,7 +145,7 @@ public class MainGame : NetworkBehaviour
             LocalPlayer.GetComponent<NewPlayerMovement>().speed = 6.5f;
         }
 
-        EndGame.instance.TpPlayerMirror(10);
+        EndGame.instance.TpPlayerMirror(isTrapper, 1);
     }
 
 

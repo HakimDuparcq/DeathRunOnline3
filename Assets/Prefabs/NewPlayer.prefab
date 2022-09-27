@@ -5784,7 +5784,6 @@ GameObject:
   - component: {fileID: 4873362825381022686}
   - component: {fileID: 2506313234331214699}
   - component: {fileID: 983618062648053581}
-  - component: {fileID: -1422789921136147367}
   m_Layer: 7
   m_Name: NewPlayer
   m_TagString: Untagged
@@ -5959,11 +5958,6 @@ MonoBehaviour:
   syncInterval: 0.1
   Name: 
   isTrapper: 0
-  SpawnTrapper: {fileID: 0}
-  SpawnAttacker: {fileID: 0}
-  SpawnLobby: {fileID: 0}
-  SpawnEndGameTrapper: {fileID: 0}
-  SpawnEndGameAttacker: {fileID: 0}
   CameraPlayer: {fileID: 7730073752191818818}
   posLocalPlayer: {x: 0, y: -0.65, z: -0.5}
   posOtherPlayers: {x: 0, y: -0.9, z: 0}
@@ -6108,20 +6102,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameUI: {fileID: 6439765272144866674}
---- !u!114 &-1422789921136147367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7730073751270945521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c319247491c894c96980dc7dc551fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
 --- !u!1 &7730073752191818830
 GameObject:
   m_ObjectHideFlags: 0
