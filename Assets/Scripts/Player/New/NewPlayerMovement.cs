@@ -61,11 +61,13 @@ public class NewPlayerMovement : MonoBehaviour
             x = Input.GetAxis("Horizontal");
             z = Input.GetAxis("Vertical");
         }
+
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
-        if (x != 0 || z != 0)
+        Vector2 direction = new Vector2 (controller.velocity.x, controller.velocity.z);
+        if (direction.magnitude/8f>0.2f)
         {
             animator.SetBool("running", true);
             animator.SetBool("idl", false);
@@ -76,17 +78,18 @@ public class NewPlayerMovement : MonoBehaviour
             animator.SetBool("idl", true);
         }
 
+
         Vector3 move = transform.right * x + transform.forward * z;
         if (move.magnitude > 0.9f)
         {
             move = Vector3.Normalize(move);
         }
-        if (canMove  && controller.enabled)
+        /*if (canMove  && controller.enabled)
         {
             controller.Move(move * speed * Time.deltaTime);
-        }
-
-
+        }*/
+        
+        
 
 
 
@@ -107,14 +110,18 @@ public class NewPlayerMovement : MonoBehaviour
         else
         {
             velocity.y += gravity * Time.deltaTime;
-            if (controller.enabled)
+            /*if (controller.enabled)
             {
                 controller.Move(velocity * Time.deltaTime);
-            }
+            }*/
             
         }
 
+        if (canMove && controller.enabled)
+        {
+            controller.Move((move * speed + velocity) * Time.deltaTime);
 
+        }
 
 
 
@@ -125,7 +132,6 @@ public class NewPlayerMovement : MonoBehaviour
             StartCoroutine(WaitDisableAttackAnim(0.5f));
         }
 
-            
     }
 
     IEnumerator WaitDisableAttackAnim(float sec)

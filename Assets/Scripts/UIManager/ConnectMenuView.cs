@@ -133,6 +133,5 @@ public class ConnectMenuView : View
         NetworkManager.singleton.StopHost();
     }
 
-
     
 }

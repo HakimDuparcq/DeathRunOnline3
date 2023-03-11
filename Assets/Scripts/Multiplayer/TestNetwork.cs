@@ -50,6 +50,10 @@ public class TestNetwork : NetworkBehaviour
 
     }
 
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+    }
 
 
 }

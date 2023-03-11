@@ -61,10 +61,9 @@ public class EndGame : NetworkBehaviour
     [ClientRpc]
     public void RpcGameEnd(bool isTrapperWinner)
     {
-        if (isLocalPlayer)
-        {
-            SendWinner(isTrapperWinner);
-        }
+
+        SendWinner(isTrapperWinner);
+
 
         StartCoroutine(Restart(isTrapperWinner));
     }
@@ -111,22 +110,6 @@ public class EndGame : NetworkBehaviour
 
         DoorManager.instance.CloseDoorNumber(1);
     }
-    /*
-    public IEnumerator TpPlayers()
-    {
-        float tempo = 0.5f;
-        while (tempo>0)
-        {
-            tempo -= Time.deltaTime;
-            for (int i = 0; i < Spectator.instance.Players.Count; i++)     // TP Lobby
-            {
-                Spectator.instance.Players[i].transform.position = Spectator.instance.Players[i].GetComponent<PlayerSetup>().SpawnLobby.position;
-            }
-            Debug.Log("TP");
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-    */
 
     public void TpPlayerMirror(bool isTrapper, int gameState)
     {
@@ -173,6 +156,7 @@ public class EndGame : NetworkBehaviour
     
     public void SendWinner(bool isTrapperWinner)
     {
+        Debug.Log("Chatbehaviorr");
         if (isTrapperWinner)
         {
             //ChatBehaviour.instance.RpcHandleMessage("Trappers Win This Round", 100);

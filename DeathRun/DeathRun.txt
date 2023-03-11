@@ -1,0 +1,66 @@
+TO DO :
+	color input field   
+	join late = spectator view (maybe)
+	
+	Character Color   90%
+
+	
+	discord   90%
+	
+
+	blocage monté sortie 1er corridor
+
+	MESSAGE WIN 
+
+		
+BUG :
+	   
+	
+EQUILIBRAGE :  
+	monter  mur invisible au lobby 
+
+
+
+BONUS :
+	     Page orga : Trelo :  https://trello.com/b/XF3nrkCx/conduite-de-projet
+             new trap blue fontaine main area
+	     Face point in cam direction   https://www.youtube.com/watch?v=17q-ZSaoBr8&t=928s&ab_channel=PabloMakes
+	     Ragdog death                  https://www.youtube.com/watch?v=M58ES2DkYRc&ab_channel=TUTOUNITYFR
+	     
+             
+	     page itchio   https://razred59.itch.io/deathrun                     50%
+	     advertisement for Buy PolygonAssetOrGamingChair
+	     Mode boulle de neige repoussante	
+
+	     COULEUR DU JEU	
+
+	     ROOMS : watch https://www.youtube.com/watch?v=w0Dzb4axdcw&ab_channel=JaredBrandjes
+             
+
+
+SOURCE :
+		mettre le jeu sur un serveur   OK   https://www.youtube.com/watch?v=X2f4vWPlq6Y
+		gameplay https://www.youtube.com/watch?v=Y7MObyLheu8
+
+
+
+
+
+Amazon Web Service : AWS Windows recherche/ Bureau a distance / ec2-13-38-74-252.eu-west-3.compute.amazonaws.com
+	    	 Activer/Desactiver  https://eu-west-3.console.aws.amazon.com/ec2/v2/home?region=eu-west-3#Instances:sort=desc:instanceState
+	    	 Action / Gerer l'etat de l'instance 
+
+		hakdup59@gmail.com  YXaV4PDmSJk68+v
+		ec2-54-90-115-205.compute-1.amazonaws.com         eApBFIX?);N;qPdMLjpCsI!ZE=@tw%c5  multi
+
+
+
+
+Project Cost : 100e map                        POLYGON Dungeons Map - Low Poly 3D Art by Synty
+	       40e particles fx		        POLYGON Particle FX - Low Poly 3D Art by Synty
+  	       12.99e characters                    POLYGON Fantasy Characters - Low Poly 3D Art by Synty
+	       10e audio-music
+	       10e audio step foot
+		
+
+

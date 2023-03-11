@@ -283,7 +283,10 @@ public class  PlayerSetup : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
-        CameraPlayer.gameObject.SetActive(false);
+        if (!isClient)
+        {
+            CameraPlayer.gameObject.SetActive(false);
+        }
 
     }
 
